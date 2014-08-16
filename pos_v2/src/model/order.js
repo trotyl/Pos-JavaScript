@@ -31,7 +31,7 @@ Order.prototype.initiate = function (items, promotions, list) {
 Order.prototype.calculate = function () {
 	_.chain(this.itemInfo)
 		.filter(function (item) {
-			return item.promotion && item.count >=2;
+			return item.promotion && item.count >=3;
 		})
 		.each(function (item) {
 			item.fare -= item.price;
@@ -69,13 +69,9 @@ Order.prototype.getDateTime = function() {
 
 Order.prototype.getBoughtList = function() {
 	var result = '----------------------\n'
-	_.chain(this.itemInfo)
-		.filter(function (item) {
-			return item.count > 0;
-		})
-		.each(function (item) {
-			result += getBoughtItem(item);
-		});
+	_(this.itemInfo).each(function (item) {
+		result += getBoughtItem(item);
+	});
 	return result;
 };
 
@@ -83,7 +79,7 @@ Order.prototype.getFreeList = function() {
 	var result = '----------------------\n' + '挥泪赠送商品：\n';
 	_.chain(this.itemInfo)
 		.filter(function (item) {
-			return item.promotion && item.count > 0;
+			return item.promotion;
 		})
 		.each(function (item) {
 			result += getFreeItem(item);
