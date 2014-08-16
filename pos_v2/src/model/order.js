@@ -6,23 +6,25 @@ function Order (items, promotions, list) {
 }
 
 Order.prototype.initiate = function (items, promotions, list) {
-	_(items).each(function (item) {
-		var my_item = _.clone(item)
-		_(my_item).extend({promotion: false, count: 0, free: 0, fare: 0});
-		this.itemInfo[item.barcode] = my_item;
-	}, this);
-
-	_(promotions[0].barcodes).each(function (barcode) {
-		this.itemInfo[barcode].promotion = true;
-	}, this);
-
 	_(list).each(function (barcode) {
 		var buy_number = parseInt(barcode.substring(11)) || 1;
 		barcode = barcode.substring(0,10);
-		var item = this.itemInfo[barcode];
+		var item = this.itemInfo[barcode] 
+			|| _.chain(items)
+				.findWhere({barcode: barcode})
+				.clone()
+				.extend({promotion: false, count: 0, free: 0, fare: 0})
+				.value();
 		item.count += buy_number;
 		item.fare += buy_number * item.price;
 		this.total += buy_number * item.price;
+		this.itemInfo[barcode] = item;
+	}, this);
+
+	_(promotions[0].barcodes).each(function (barcode) {
+		if(this.itemInfo[barcode]) {
+			this.itemInfo[barcode].promotion = true;		
+		}
 	}, this);
 };
 
