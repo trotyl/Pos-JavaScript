@@ -9,27 +9,21 @@ Order.prototype.initiate = function (items, promotions, list) {
 	_(list).each(function (barcode) {
 		var buy_number = parseInt(barcode.substring(11)) || 1;
 		barcode = barcode.substring(0,10);
+		var in_promotion = _(promotions[0].barcodes).some(function (the_barcode) {
+			return the_barcode == barcode;
+		}, this);
 		var item = this.itemInfo[barcode] 
-			|| _.chain(items)
-				.findWhere({barcode: barcode})
-				.clone()
-				.extend({promotion: false, count: 0, free: 0, fare: 0})
-				.value();
-		item.count += buy_number;
-		item.fare += buy_number * item.price;
-		this.total += buy_number * item.price;
+			|| _.chain(items).findWhere({barcode: barcode}).clone()
+				.extend({promotion: in_promotion, count: 0, free: 0, fare: 0}).value();
+		item.count += buy_number;		
 		this.itemInfo[barcode] = item;
 	}, this);
 
-	_(promotions[0].barcodes).each(function (barcode) {
-		if(this.itemInfo[barcode]) {
-			var item = this.itemInfo[barcode];
-			item.promotion = true;
-			item.free = Math.floor(item.count / 3);
-			item.fare -= item.price * item.free;
-			this.gift += item.price * item.free;
-			this.total -= item.price * item.free;
-		}
+	_(this.itemInfo).each(function (item) {
+		item.promotion && (item.free = Math.floor(item.count / 3));
+		item.fare = (item.count - item.free) * item.price;
+		this.total += item.fare;
+		this.gift += item.free * item.price;
 	}, this);
 };
 
