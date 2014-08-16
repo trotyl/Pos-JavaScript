@@ -1,44 +1,41 @@
 function Order (items, promotions, list) {
-	this.items = items;
-	this.promotions = promotions;
-	this.list = list;
 	this.itemInfo = {};
 	this.total = 0;
 	this.gift = 0;
-	this.initiate();
+	this.initiate(items, promotions, list);
 }
 
-Order.prototype.initiate = function () {
-	_(this.items).each(function (item) {
-		_(item).extend({promotion: false, count: 0, free: 0, fare: 0});
-		this.itemInfo[item.barcode] = item;
+Order.prototype.initiate = function (items, promotions, list) {
+	_(items).each(function (item) {
+		var my_item = _.clone(item)
+		_(my_item).extend({promotion: false, count: 0, free: 0, fare: 0});
+		this.itemInfo[item.barcode] = my_item;
 	}, this);
 
-	_(this.promotions[0].barcodes).each(function (barcode) {
+	_(promotions[0].barcodes).each(function (barcode) {
 		this.itemInfo[barcode].promotion = true;
+	}, this);
+
+	_(list).each(function (barcode) {
+		var buy_number = parseInt(barcode.substring(11)) || 1;
+		barcode = barcode.substring(0,10);
+		var item = this.itemInfo[barcode];
+		item.count += buy_number;
+		item.fare += buy_number * item.price;
+		this.total += buy_number * item.price;
 	}, this);
 };
 
 Order.prototype.calculate = function () {
-	_(this.list).each(function (barcode) {
-		var buy_number = parseInt(barcode.substring(11)) || 1;
-		barcode = barcode.substring(0,10);
-		var item = this.itemInfo[barcode];
-		var flag = item.count < 2;
-		item.count += buy_number;
-		flag = flag && item.count >= 2;
-		item.fare += buy_number * item.price;
-		this.total += buy_number * item.price;
-	}, this);
 	_.chain(this.itemInfo)
 		.filter(function (item) {
 			return item.promotion && item.count >=2;
 		})
 		.each(function (item) {
 			item.fare -= item.price;
-			item.free += 1;
-			this.gift += item.price;
-			this.total -= item.price;
+			item.free = Math.floor(item.count / 3);
+			this.gift += item.price * item.free;
+			this.total -= item.price * item.free;
 		}, this)
 };
 
