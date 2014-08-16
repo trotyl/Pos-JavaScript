@@ -23,22 +23,14 @@ Order.prototype.initiate = function (items, promotions, list) {
 
 	_(promotions[0].barcodes).each(function (barcode) {
 		if(this.itemInfo[barcode]) {
-			this.itemInfo[barcode].promotion = true;		
-		}
-	}, this);
-};
-
-Order.prototype.calculate = function () {
-	_.chain(this.itemInfo)
-		.filter(function (item) {
-			return item.promotion && item.count >=3;
-		})
-		.each(function (item) {
-			item.fare -= item.price;
+			var item = this.itemInfo[barcode];
+			item.promotion = true;
 			item.free = Math.floor(item.count / 3);
+			item.fare -= item.price * item.free;
 			this.gift += item.price * item.free;
 			this.total -= item.price * item.free;
-		}, this)
+		}
+	}, this);
 };
 
 Order.prototype.output = function () {
