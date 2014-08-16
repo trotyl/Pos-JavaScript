@@ -63,13 +63,9 @@ Order.prototype.getBoughtList = function() {
 
 Order.prototype.getFreeList = function() {
 	var result = '----------------------\n' + '挥泪赠送商品：\n';
-	_.chain(this.itemInfo)
-		.filter(function (item) {
-			return item.promotion;
-		})
-		.each(function (item) {
-			result += getFreeItem(item);
-		});
+	_(this.itemInfo).each(function (item) {
+		item.promotion && (result += getFreeItem(item));
+	});
 	return result;
 };
 
