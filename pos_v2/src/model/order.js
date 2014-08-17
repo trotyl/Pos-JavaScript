@@ -13,8 +13,8 @@ Order.prototype.initiate = function (items, promotions, list) {
 			return the_barcode == barcode;
 		}, this);
 		var item = this.itemInfo[barcode] 
-			|| _.chain(items).findWhere({barcode: barcode}).clone()
-				.extend({promotion: in_promotion, count: 0, free: 0, fare: 0}).value();
+			|| _.chain(items).findWhere({barcode: barcode}).clone().value();
+		item.promotion = in_promotion;
 		item.count += buy_number;		
 		this.itemInfo[barcode] = item;
 	}, this);
