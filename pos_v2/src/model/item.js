@@ -8,3 +8,9 @@ function Item(barcode, name, unit, price) {
     this.free = 0;
     this.fare = 0;
 }
+
+Item.prototype.getPromotion = function(promotions) {
+	this.promotion = _(promotions[0].barcodes).some(function (the_barcode) {
+		return the_barcode == this.barcode;
+	}, this);
+};
