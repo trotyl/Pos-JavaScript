@@ -70,20 +70,15 @@ Order.prototype.getFreeList = function() {
 };
 
 Order.prototype.getStats = function() {
-	var result = '----------------------\n'
-	result += '总计：' + this.total.toFixed(2) + '(元)\n'
+	return '----------------------\n' + '总计：' + this.total.toFixed(2) + '(元)\n' 
 		+ '节省：' + this.gift.toFixed(2) + '(元)\n';
-	return result;
 };
 
 function getBoughtItem (item) {
-	return '名称：' + item.name 
-		+ '，数量：' + item.count + item.unit 
-		+ '，单价：' + item.price.toFixed(2) + '(元)'
-		+ '，小计：' + item.fare.toFixed(2) + '(元)\n';
+	return '名称：' + item.name + '，数量：' + item.count + item.unit 
+		+ '，单价：' + item.price.toFixed(2) + '(元)' + '，小计：' + item.fare.toFixed(2) + '(元)\n';
 }
 
 function getFreeItem (item) {
-	return '名称：' + item.name
-		+ '，数量：' + item.free + item.unit + '\n';
+	return '名称：' + item.name + '，数量：' + item.free + item.unit + '\n';
 }
