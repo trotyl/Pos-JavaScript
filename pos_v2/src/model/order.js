@@ -9,14 +9,13 @@ Order.prototype.initiate = function (items, promotions, list) {
 	_(list).each(function (barcode) {
 		var buy_number = parseInt(barcode.substring(11)) || 1;
 		barcode = barcode.substring(0,10);
+		var item = this.itemInfo[barcode] || _(items).findWhere({barcode: barcode});
 		var in_promotion = _(promotions[0].barcodes).some(function (the_barcode) {
 			return the_barcode == barcode;
 		}, this);
-		var item = this.itemInfo[barcode] 
-			|| _.chain(items).findWhere({barcode: barcode}).clone().value();
 		item.promotion = in_promotion;
-		item.count += buy_number;		
-		this.itemInfo[barcode] = item;
+		item.count += buy_number;
+		this.itemInfo[barcode] = item;	
 	}, this);
 
 	_(this.itemInfo).each(function (item) {
