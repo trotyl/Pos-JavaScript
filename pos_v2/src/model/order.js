@@ -28,7 +28,7 @@ Order.prototype.output = function () {
 };
 
 Order.prototype.getDateTime = function() {
-	var dateDigitToString = function (num) {
+	function dateDigitToString (num) {
     	return num < 10 ? '0' + num : num;
 	}
 
@@ -44,6 +44,11 @@ Order.prototype.getDateTime = function() {
 };
 
 Order.prototype.getBoughtList = function() {
+	function getBoughtItem (item) {
+		return '名称：' + item.name + '，数量：' + item.count + item.unit 
+			+ '，单价：' + item.price.toFixed(2) + '(元)' + '，小计：' + item.fare.toFixed(2) + '(元)\n';
+	}
+
 	var result = '----------------------\n'
 	_(this.itemInfo).each(function (item) {
 		result += getBoughtItem(item);
@@ -52,6 +57,10 @@ Order.prototype.getBoughtList = function() {
 };
 
 Order.prototype.getFreeList = function() {
+	function getFreeItem (item) {
+		return '名称：' + item.name + '，数量：' + item.free + item.unit + '\n';
+	}
+
 	var result = '----------------------\n' + '挥泪赠送商品：\n';
 	_(this.itemInfo).each(function (item) {
 		item.promotion && (result += getFreeItem(item));
@@ -63,12 +72,3 @@ Order.prototype.getStats = function() {
 	return '----------------------\n' + '总计：' + this.total.toFixed(2) + '(元)\n' 
 		+ '节省：' + (this.original - this.total).toFixed(2) + '(元)\n';
 };
-
-function getBoughtItem (item) {
-	return '名称：' + item.name + '，数量：' + item.count + item.unit 
-		+ '，单价：' + item.price.toFixed(2) + '(元)' + '，小计：' + item.fare.toFixed(2) + '(元)\n';
-}
-
-function getFreeItem (item) {
-	return '名称：' + item.name + '，数量：' + item.free + item.unit + '\n';
-}
