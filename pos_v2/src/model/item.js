@@ -10,7 +10,8 @@ function Item(barcode, name, unit, price) {
 }
 
 Item.prototype.getPromotion = function(promotions) {
-	this.promotion = _(promotions[0].barcodes).some(function (the_barcode) {
+	var two_with_one_list = _(promotions).findWhere({type: 'BUY_TWO_GET_ONE_FREE'}).barcodes;
+	this.promotion = _(two_with_one_list).some(function (the_barcode) {
 		return the_barcode == this.barcode;
 	}, this);
 };
