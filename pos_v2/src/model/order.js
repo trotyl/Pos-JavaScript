@@ -9,7 +9,7 @@ Order.prototype.initiate = function (items, promotions, list) {
 	_(list).each(function (raw_barcode) {
 		barcode = raw_barcode.substring(0,10);
 		var item = this.itemInfo[barcode] || _(items).findWhere({barcode: barcode});
-		item.getPromotion(promotions);
+		!item.promotion && item.getPromotion(promotions);
 		this.original += item.addCount(raw_barcode);
 		this.itemInfo[barcode] = item;
 	}, this);
