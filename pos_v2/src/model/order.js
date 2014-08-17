@@ -15,7 +15,6 @@ Order.prototype.initiate = function (items, promotions, list) {
 	}, this);
 
 	_(this.itemInfo).each(function (item) {
-		item.compute();
 		this.total += item.fare;
 		this.gift += item.free * item.price;
 	}, this);
