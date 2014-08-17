@@ -1,7 +1,7 @@
 function Order (items, promotions, list) {
 	this.itemInfo = {};
 	this.total = 0;
-	this.gift = 0;
+	this.original = 0;
 	this.initiate(items, promotions, list);
 }
 
@@ -10,14 +10,11 @@ Order.prototype.initiate = function (items, promotions, list) {
 		barcode = raw_barcode.substring(0,10);
 		var item = this.itemInfo[barcode] || _(items).findWhere({barcode: barcode});
 		item.getPromotion(promotions);
-		item.addCount(raw_barcode);
-		this.itemInfo[barcode] = item;	
+		this.original += item.addCount(raw_barcode);
+		this.itemInfo[barcode] = item;
 	}, this);
 
 	this.total = _(this.itemInfo).reduce(function (sum, item) { return sum + item.fare; }, 0, this);
-	_(this.itemInfo).each(function (item) {
-		this.gift += item.free * item.price;
-	}, this);
 };
 
 Order.prototype.output = function () {
@@ -64,7 +61,7 @@ Order.prototype.getFreeList = function() {
 
 Order.prototype.getStats = function() {
 	return '----------------------\n' + '总计：' + this.total.toFixed(2) + '(元)\n' 
-		+ '节省：' + this.gift.toFixed(2) + '(元)\n';
+		+ '节省：' + (this.original - this.total).toFixed(2) + '(元)\n';
 };
 
 function getBoughtItem (item) {

@@ -20,4 +20,5 @@ Item.prototype.addCount = function(raw_barcode) {
 	this.count += bought_number;
 	this.promotion && (this.free = Math.floor(this.count / 3));
 	this.fare = (this.count - this.free) * this.price;
+	return bought_number * this.price;
 };
