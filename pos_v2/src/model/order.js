@@ -14,8 +14,8 @@ Order.prototype.initiate = function (items, promotions, list) {
 		this.itemInfo[barcode] = item;	
 	}, this);
 
+	this.total = _(this.itemInfo).reduce(function (sum, item) { return sum + item.fare; }, 0, this);
 	_(this.itemInfo).each(function (item) {
-		this.total += item.fare;
 		this.gift += item.free * item.price;
 	}, this);
 };
