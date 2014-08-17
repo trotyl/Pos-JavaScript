@@ -6,12 +6,11 @@ function Order (items, promotions, list) {
 }
 
 Order.prototype.initiate = function (items, promotions, list) {
-	_(list).each(function (barcode) {
-		var bought_number = parseInt(barcode.substring(11)) || 1;
-		barcode = barcode.substring(0,10);
+	_(list).each(function (raw_barcode) {
+		barcode = raw_barcode.substring(0,10);
 		var item = this.itemInfo[barcode] || _(items).findWhere({barcode: barcode});
 		item.getPromotion(promotions);
-		item.count += bought_number;
+		item.addCount(raw_barcode);
 		this.itemInfo[barcode] = item;	
 	}, this);
 

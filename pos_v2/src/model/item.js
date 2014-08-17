@@ -14,3 +14,8 @@ Item.prototype.getPromotion = function(promotions) {
 		return the_barcode == this.barcode;
 	}, this);
 };
+
+Item.prototype.addCount = function(raw_barcode) {
+	var bought_number = parseInt(raw_barcode.substring(11)) || 1;
+	this.count += bought_number;
+};
