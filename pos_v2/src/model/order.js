@@ -18,10 +18,11 @@ Order.prototype.initiate = function (items, promotions, list) {
 };
 
 Order.prototype.output = function () {
+	this.getLists();
 	var result = '***<没钱赚商店>购物清单***\n';
 	result += '打印时间：' + this.getDateTime() + '\n';
-	result += this.getBoughtList();
-	result += this.getFreeList();
+	result += this.boughtList;
+	result += this.freeList;
 	result += this.getStats();
 	result += '**********************';
 	return result;
@@ -31,29 +32,25 @@ Order.prototype.getDateTime = function() {
 	return moment().format('YYYY年MM月DD日 HH:mm:ss');
 };
 
-Order.prototype.getBoughtList = function() {
+Order.prototype.getLists = function() {
+	
 	function getBoughtItem (item) {
 		return '名称：' + item.name + '，数量：' + item.count + item.unit 
 			+ '，单价：' + item.price.toFixed(2) + '(元)' + '，小计：' + item.fare.toFixed(2) + '(元)\n';
 	}
 
-	var result = '----------------------\n'
-	_(this.itemInfo).each(function (item) {
-		result += getBoughtItem(item);
-	});
-	return result;
-};
-
-Order.prototype.getFreeList = function() {
 	function getFreeItem (item) {
 		return '名称：' + item.name + '，数量：' + item.free + item.unit + '\n';
 	}
 
-	var result = '----------------------\n' + '挥泪赠送商品：\n';
+	var boughtList = '----------------------\n';
+	var freeList = '----------------------\n' + '挥泪赠送商品：\n';
 	_(this.itemInfo).each(function (item) {
-		item.promotion && (result += getFreeItem(item));
+		boughtList += getBoughtItem(item);
+		item.promotion && (freeList += getFreeItem(item));
 	});
-	return result;
+	this.boughtList = boughtList;
+	this.freeList = freeList;
 };
 
 Order.prototype.getStats = function() {
