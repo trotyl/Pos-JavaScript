@@ -9,9 +9,13 @@ Order.prototype.initiate = function (items, promotions, list) {
 	_(list).each(function (raw_barcode) {
 		barcode = raw_barcode.substring(0,10);
 		var item = this.itemInfo[barcode] || _(items).findWhere({barcode: barcode});
-		!item.promotion && item.getPromotion(promotions);
 		this.original += item.addCount(raw_barcode);
 		this.itemInfo[barcode] = item;
+	}, this);
+
+	var two_with_one_list = _(promotions).findWhere({type: 'BUY_TWO_GET_ONE_FREE'}).barcodes;
+	_(two_with_one_list).each(function (barcode) {
+		this.itemInfo[barcode] && this.itemInfo[barcode].getPromotion();
 	}, this);
 
 	this.total = _(this.itemInfo).reduce(function (sum, item) { return sum + item.fare; }, 0, this);
