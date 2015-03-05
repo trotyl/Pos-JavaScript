@@ -18,14 +18,12 @@ describe('Discount: ', function () {
     it('should be able to get the correct price of item', function () {
         var discount = {
             rate: 0.5,
-            scope: {
-                isInRange: function () {
-                    return true;
-                }
+            isInRange: function () {
+                return true;
             }
         };
         expect(Discount.getPrice(discount, item0)).toEqual(1.50);
-        spyOn(discount.scope, 'isInRange').and.returnValue(false);
+        spyOn(discount, 'isInRange').and.returnValue(false);
         expect(Discount.getPrice(discount, item0)).toEqual(3.00);
     });
 
@@ -37,9 +35,9 @@ describe('Discount: ', function () {
         });
 
         it('should be able to constructed correctly.', function () {
-            expect(discount.scope.type).toEqual(Scope.types.single);
+            expect(discount.type).toEqual(Scope.types.single);
             expect(discount.rate).toEqual(0.5);
-            expect(discount.scope.barcode).toEqual('ITEM000000');
+            expect(discount.barcode).toEqual('ITEM000000');
         });
 
         it('should throw error if the rate is incorrect.', function () {
@@ -58,9 +56,9 @@ describe('Discount: ', function () {
         });
 
         it('should be able to check if a item is in discount.', function () {
-            expect(Discount.isInRange(discount, item0)).toBeTruthy();
-            expect(Discount.isInRange(discount, item1)).toBeFalsy();
-            expect(Discount.isInRange(discount, item2)).toBeFalsy();
+            expect(discount.isInRange(item0)).toBeTruthy();
+            expect(discount.isInRange(item1)).toBeFalsy();
+            expect(discount.isInRange(item2)).toBeFalsy();
         });
 
     });
@@ -74,9 +72,9 @@ describe('Discount: ', function () {
         });
 
         it('should be able to constructed correctly.', function () {
-            expect(discount.scope.type).toEqual(Scope.types.brand);
+            expect(discount.type).toEqual(Scope.types.brand);
             expect(discount.rate).toEqual(0.5);
-            expect(discount.scope.brand).toEqual('可口可乐');
+            expect(discount.brand).toEqual('可口可乐');
         });
 
         it('should throw error if the rate is incorrect.', function () {
@@ -95,9 +93,9 @@ describe('Discount: ', function () {
         });
 
         it('should be able to check if a item is in discount.', function () {
-            expect(Discount.isInRange(discount, item0)).toBeTruthy();
-            expect(Discount.isInRange(discount, item1)).toBeTruthy();
-            expect(Discount.isInRange(discount, item2)).toBeFalsy();
+            expect(discount.isInRange(item0)).toBeTruthy();
+            expect(discount.isInRange(item1)).toBeTruthy();
+            expect(discount.isInRange(item2)).toBeFalsy();
         });
 
     });
@@ -112,9 +110,9 @@ describe('Discount: ', function () {
         });
 
         it('should be able to constructed correctly.', function () {
-            expect(discount.scope.type).toEqual(Scope.types.full);
+            expect(discount.type).toEqual(Scope.types.full);
             expect(discount.rate).toEqual(0.5);
-            expect(discount.scope.exceptions.length).toEqual(2);
+            expect(discount.exceptions.length).toEqual(2);
         });
 
         it('should throw error if the rate is incorrect.', function () {
@@ -133,9 +131,9 @@ describe('Discount: ', function () {
         });
 
         it('should be able to check if a item is in discount.', function () {
-            expect(Discount.isInRange(discount, item0)).toBeFalsy();
-            expect(Discount.isInRange(discount, item1)).toBeFalsy();
-            expect(Discount.isInRange(discount, item2)).toBeTruthy();
+            expect(discount.isInRange(item0)).toBeFalsy();
+            expect(discount.isInRange(item1)).toBeFalsy();
+            expect(discount.isInRange(item2)).toBeTruthy();
         });
 
     });

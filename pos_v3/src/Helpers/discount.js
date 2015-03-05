@@ -3,16 +3,14 @@ function Discount() {
     throw new Error('Static class can not be instanced.');
 }
 
-Discount.types = {
-    single: 0,
-    brand: 1,
-    full: 2
+Discount.isInRange = function (discount, item) {
+    return discount.scope.isInRange(item)
 };
 
 Discount.getPrice = function (discount, item) {
     var price = null;
-    if (discount.isInRange(item)) {
-        price = item.price * discount.discount;
+    if (Discount.isInRange(discount, item)) {
+        price = item.price * discount.rate;
     }
     else {
         price = item.price;
@@ -22,7 +20,7 @@ Discount.getPrice = function (discount, item) {
 
 Discount.ValidateRate = function (rate) {
     if(rate < 0 || rate > 1){
-        throw new RangeError("The rate of discount is out of range(0, 1)! It's " + rate);
+        throw new RangeError("The rate of rate is out of range(0, 1)! It's " + rate);
     }
 };
 
@@ -30,39 +28,22 @@ Discount.ValidateRate = function (rate) {
 // 单品优惠
 function SingleDiscount(rate, item_barcode) {
     Discount.ValidateRate(rate);
-    this.type = Discount.types.single;
-    this.discount = rate;
-    this.barcode = item_barcode;
+    this.scope = new SingleScope(item_barcode);
+    this.rate = rate;
 }
-
-SingleDiscount.prototype.isInRange = function (item) {
-    return this.barcode == item.barcode;
-};
 
 
 // 品牌优惠
 function BrandDiscount(rate, brand_name) {
     Discount.ValidateRate(rate);
-    this.type = Discount.types.brand;
-    this.discount = rate;
-    this.brand = brand_name;
+    this.scope = new BrandScope(brand_name);
+    this.rate = rate;
 }
-
-BrandDiscount.prototype.isInRange = function (item) {
-    return this.brand == item.brand;
-};
 
 
 // 全场优惠
 function FullDiscount(rate, exception_list) {
     Discount.ValidateRate(rate);
-    this.type = Discount.types.full;
-    this.discount = rate;
-    this.exceptions = exception_list;
+    this.scope = new FullScope(exception_list);
+    this.rate = rate;
 }
-
-FullDiscount.prototype.isInRange = function (item) {
-    return !_(this.exceptions).some(function (exception) {
-        return item.barcode == exception
-    });
-};
