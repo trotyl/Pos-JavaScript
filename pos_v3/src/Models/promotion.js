@@ -21,7 +21,7 @@ Promotion.getPrice = function (promotion, item) {
 };
 
 Promotion.ValidateDiscount = function (discount) {
-    if(discount < 0 && discount > 1){
+    if(discount < 0 || discount > 1){
         throw new RangeError("The DISCOUNT of promotion is out of range(0, 1)! It's " + discount);
     }
 };

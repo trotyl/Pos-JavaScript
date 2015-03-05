@@ -1,11 +1,10 @@
 describe('Item ', function () {
-    var allItems, inputs, dateDigitToString;
 
     beforeEach(function () {
 
     });
 
-    it('should be constructed correctly', function () {
+    it('should be able to constructed correctly', function () {
 
         var item = new Item('ITEM000000','饮料', '可口可乐', '可口可乐350ml', '瓶', 3.00);
 
