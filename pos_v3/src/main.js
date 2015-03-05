@@ -1,0 +1,3 @@
+function printInventory (inputs) {
+    // Todo
+}
