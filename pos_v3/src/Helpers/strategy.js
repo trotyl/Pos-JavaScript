@@ -1,8 +1,9 @@
-function Strategy(allItems, discounts, promotions, discountMutual) {
+function Strategy(allItems, discounts, promotions, discountMutual, keepOriginal) {
     this.allItems = allItems;
     this.discounts = discounts;
     this.promotions = promotions;
     this.discountMutual = discountMutual;
+    this.keepOriginal = keepOriginal;
 }
 
 Strategy.prototype.GenerageResult = function (input, formatter, output) {
