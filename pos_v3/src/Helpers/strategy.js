@@ -9,7 +9,7 @@ function Strategy(allItems, discounts, promotions, discountMutual, keepOriginal)
 Strategy.prototype.GenerageResult = function (input, formatter, output) {
     var enhancedItems = Strategy.GetEnhancedItems(input);
     Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
-    var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
+    var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems, this.keepOriginal);
     var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
 
     var result = formatter.format(enhancedItems, enhancedDiscounts, enhancedPromotions);
@@ -23,6 +23,7 @@ Strategy.GetEnhancedItems = function (input) {
             var item = _.where(this.allItems, {'barcode': barcode});
             enhancedItems.push({
                 'item': item,
+                'price': item.price,
                 'amount': fakeItem[barcode],
                 'discount': 0,
                 'discounts': {},
@@ -74,7 +75,7 @@ Strategy.EnsurePromotions = function (promotions, mutual, enhancedItems) {
     }, this);
 };
 
-Strategy.GetDiscounts = function (enhancedItems) {
+Strategy.GetDiscounts = function (enhancedItems, keepOriginal) {
     var enhancedDiscounts = [];
     _.forEach(enhancedItems, function (enhancedItem) {
         _.forEach(Scope.types, function (val, key) {
@@ -82,15 +83,17 @@ Strategy.GetDiscounts = function (enhancedItems) {
                 var discount = enhancedItem.discounts[val];
                 var label = discount.scope.GetLabel();
                 var enhancedDiscount = _.where(enhancedDiscounts, {'label': label});
+                var tmpPrice = enhancedItem.price * (1 - discount.rate);
                 if(enhancedDiscount){
-                    enhancedDiscount.price += enhancedItem.item.price * enhancedItem.amount * (1 - discount.rate);
+                    enhancedDiscount.price += tmpPrice * enhancedItem.amount;
+                    enhancedItem.price = keepOriginal? enhancedItem.price: tmpPrice;
                 }
                 else {
                     enhancedDiscount.push({
                         'label': label,
                         'rate': discount.rate,
                         'scope': discount.scope,
-                        'price': enhancedItem.item.price * enhancedItem.amount * (1 - discount.rate)
+                        'price': tmpPrice * enhancedItem.amount
                     })
                 }
             }
