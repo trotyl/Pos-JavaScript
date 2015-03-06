@@ -4,9 +4,25 @@ function Scope(){
 }
 
 Scope.types = {
-    single: 0,
-    brand: 1,
-    full: 2
+    single: 1,
+    brand: 2,
+    full: 4
+};
+
+Scope.DynamicCreate = function (type, label) {
+    var res = null;
+    switch (type){
+        case Scope.types.single:
+            res = new SingleScope(label);
+            break;
+        case Scope.types.brand:
+            res = new BrandScope(label);
+            break;
+        case Scope.types.full:
+            res = new FullScope([]);
+            break;
+    }
+    return res;
 };
 
 
@@ -20,6 +36,10 @@ SingleScope.prototype.isInRange = function (item) {
     return this.barcode == item.barcode;
 };
 
+SingleScope.prototype.GetLabel = function () {
+    return this.barcode;
+};
+
 
 // 品牌范围
 function BrandScope(brand_name) {
@@ -29,6 +49,10 @@ function BrandScope(brand_name) {
 
 BrandScope.prototype.isInRange = function (item) {
     return this.brand == item.brand;
+};
+
+BrandScope.prototype.GetLabel = function () {
+    return this.brand;
 };
 
 
@@ -42,4 +66,11 @@ FullScope.prototype.isInRange = function (item) {
     return !_(this.exceptions).some(function (exception) {
         return item.barcode == exception
     });
+};
+
+/**
+ * @return {string}
+ */
+FullScope.prototype.GetLabel = function () {
+    return '$LabelOfFullScope';
 };
