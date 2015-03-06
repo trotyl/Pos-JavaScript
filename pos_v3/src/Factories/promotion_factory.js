@@ -6,8 +6,8 @@ function PromotionFactory() {
 function SinglePromotionFactory() {}
 
 
-SinglePromotionFactory.prototype.GetPromotion = function (barcode) {
-    return new Promotion(100, 5, new SingleScope(barcode));
+SinglePromotionFactory.prototype.GetPromotion = function (name) {
+    return new Promotion(100, 5, new SingleScope(name));
 };
 
 function BrandPromotionFactory() {}
