@@ -4,13 +4,9 @@ function Discount(rate, scope) {
     this.scope = scope;
 }
 
-Discount.prototype.isInRange = function (item) {
-    return this.scope.isInRange(item)
-};
-
 Discount.prototype.getPrice = function (item) {
     var price = null;
-    if (this.isInRange(item)) {
+    if (this.scope.isInRange(item)) {
         price = item.price * this.rate;
     }
     else {
