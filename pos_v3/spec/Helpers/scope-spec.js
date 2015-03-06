@@ -61,13 +61,13 @@ describe('Scope: ', function () {
         var scope;
 
         beforeEach(function () {
-            var exception_list = [item0.barcode, item1.barcode];
-            scope = new FullScope(exception_list);
+            var exceptions = [new BrandScope('可口可乐')];
+            scope = new FullScope(exceptions);
         });
 
         it('should be able to constructed correctly.', function () {
             expect(scope.type).toEqual(Scope.types.full);
-            expect(scope.exceptions.length).toEqual(2);
+            expect(scope.exceptions.length).toEqual(1);
         });
 
         it('should be able to check if a item is in scope.', function () {

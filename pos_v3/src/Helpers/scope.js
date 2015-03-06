@@ -1,4 +1,4 @@
-function Scope(){
+function Scope() {
     // This method should never be called.
     throw new Error('Static class can not be instanced.');
 }
@@ -47,15 +47,20 @@ BrandScope.prototype.GetLabel = function () {
 
 
 // 全场范围
-function FullScope(exception_list) {
+function FullScope(exceptions) {
     this.type = Scope.types.full;
-    this.exceptions = exception_list;
+    this.exceptions = exceptions;
 }
 
 FullScope.prototype.isInRange = function (item) {
-    return !_(this.exceptions).some(function (exception) {
-        return item.barcode == exception
-    });
+    var res = true;
+    for (var i in this.exceptions) {
+        if (this.exceptions[i].isInRange(item)) {
+            res = false;
+            break;
+        }
+    }
+    return res;
 };
 
 /**
