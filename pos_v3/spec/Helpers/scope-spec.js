@@ -19,12 +19,12 @@ describe('Scope: ', function () {
         var scope;
 
         beforeEach(function () {
-            scope = new SingleScope('ITEM000000');
+            scope = new SingleScope('可口可乐350ml');
         });
 
         it('should be able to constructed correctly.', function () {
             expect(scope.type).toEqual(Scope.types.single);
-            expect(scope.barcode).toEqual('ITEM000000');
+            expect(scope.name).toEqual('可口可乐350ml');
         });
 
         it('should be able to check if a item is in discount.', function () {

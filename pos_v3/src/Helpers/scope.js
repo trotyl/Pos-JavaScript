@@ -11,20 +11,20 @@ Scope.types = {
 
 
 // 单品范围
-function SingleScope(item_barcode) {
+function SingleScope(item_name) {
     this.type = Scope.types.single;
-    this.barcode = item_barcode;
+    this.name = item_name;
 }
 
 SingleScope.prototype.isInRange = function (item) {
-    return this.barcode == item.barcode;
+    return this.name == item.name;
 };
 
 /**
  * @return {string}
  */
 SingleScope.prototype.GetLabel = function () {
-    return '$LabelOfSingleScope' + this.barcode;
+    return '$LabelOfSingleScope' + this.name;
 };
 
 
