@@ -1,13 +1,13 @@
 describe('Discount: ', function () {
 
-    var item0 = new Item('ITEM000000', '饮料', '可口可乐', '可口可乐350ml', '瓶', 3.00);
-    var item1 = new Item('ITEM000010', '饮料', '可口可乐', '可口可乐550ml', '瓶', 4.00);
-    var item2 = new Item('ITEM000003', '水果', '云山', '云山荔枝', '斤', 15.00);
-    var discount, scope;
+    var item ,discount, scope;
 
     beforeEach(function () {
+        item = {price: 3.00};
         scope = {
-            isInRange: function(){ return true; }
+            isInRange: function () {
+                return true;
+            }
         };
         discount = new Discount(0.5, scope);
     });
@@ -18,9 +18,9 @@ describe('Discount: ', function () {
     });
 
     it('should be able to get the correct price of item', function () {
-        expect(discount.getPrice(item0)).toEqual(1.50);
+        expect(discount.getPrice(item)).toEqual(1.50);
         spyOn(discount.scope, 'isInRange').and.returnValue(false);
-        expect(discount.getPrice(item0)).toEqual(3.00);
+        expect(discount.getPrice(item)).toEqual(3.00);
     });
 
     it('should throw error if the rate is incorrect.', function () {
