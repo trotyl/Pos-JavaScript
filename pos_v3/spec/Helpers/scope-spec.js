@@ -10,7 +10,7 @@ describe('Scope: ', function () {
 
     it('Itself should not be able to instanced.', function () {
         var fun = function () {
-            return new Discount();
+            return new Scope();
         };
         expect(fun).toThrow();
     });

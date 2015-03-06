@@ -1,16 +1,17 @@
-function Discount() {
-    // This method should never be called.
-    throw new Error('Static class can not be instanced.');
+function Discount(rate, scope) {
+    Discount.ValidateRate(rate);
+    this.rate = rate;
+    this.scope = scope;
 }
 
-Discount.isInRange = function (discount, item) {
-    return discount.scope.isInRange(item)
+Discount.prototype.isInRange = function (item) {
+    return this.scope.isInRange(item)
 };
 
-Discount.getPrice = function (discount, item) {
+Discount.prototype.getPrice = function (item) {
     var price = null;
-    if (Discount.isInRange(discount, item)) {
-        price = item.price * discount.rate;
+    if (this.isInRange(item)) {
+        price = item.price * this.rate;
     }
     else {
         price = item.price;
@@ -24,26 +25,3 @@ Discount.ValidateRate = function (rate) {
     }
 };
 
-
-// 单品优惠
-function SingleDiscount(rate, item_barcode) {
-    Discount.ValidateRate(rate);
-    this.scope = new SingleScope(item_barcode);
-    this.rate = rate;
-}
-
-
-// 品牌优惠
-function BrandDiscount(rate, brand_name) {
-    Discount.ValidateRate(rate);
-    this.scope = new BrandScope(brand_name);
-    this.rate = rate;
-}
-
-
-// 全场优惠
-function FullDiscount(rate, exception_list) {
-    Discount.ValidateRate(rate);
-    this.scope = new FullScope(exception_list);
-    this.rate = rate;
-}
