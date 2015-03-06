@@ -9,22 +9,6 @@ Scope.types = {
     full: 4
 };
 
-Scope.DynamicCreate = function (type, label) {
-    var res = null;
-    switch (type){
-        case Scope.types.single:
-            res = new SingleScope(label);
-            break;
-        case Scope.types.brand:
-            res = new BrandScope(label);
-            break;
-        case Scope.types.full:
-            res = new FullScope([]);
-            break;
-    }
-    return res;
-};
-
 
 // 单品范围
 function SingleScope(item_barcode) {
@@ -36,8 +20,11 @@ SingleScope.prototype.isInRange = function (item) {
     return this.barcode == item.barcode;
 };
 
+/**
+ * @return {string}
+ */
 SingleScope.prototype.GetLabel = function () {
-    return this.barcode;
+    return '$LabelOfSingleScope' + this.barcode;
 };
 
 
@@ -51,8 +38,11 @@ BrandScope.prototype.isInRange = function (item) {
     return this.brand == item.brand;
 };
 
+/**
+ * @return {string}
+ */
 BrandScope.prototype.GetLabel = function () {
-    return this.brand;
+    return '$LabelOfBrandScope' + this.brand;
 };
 
 
