@@ -80,18 +80,19 @@ Strategy.GetDiscounts = function (enhancedItems) {
     var enhancedDiscounts = [];
     _.forEach(enhancedItems, function (enhancedItem) {
         _.forEach(Scope.types, function (val, key) {
-            if (enhancedItem.discount & val != 0) {
+            if ((enhancedItem.discount & val) != 0) {
                 var discount = enhancedItem.discounts[val];
                 var label = discount.scope.GetLabel();
                 var enhancedDiscount = _.findWhere(enhancedDiscounts, {'label': label});
                 var tmpPrice = enhancedItem.price * (1 - discount.rate);
                 if(enhancedDiscount){
                     enhancedDiscount.price += tmpPrice * enhancedItem.amount;
-                    enhancedItem.price = enhancedDiscount.discount.keep? enhancedItem.price: tmpPrice;
+                    enhancedItem.price = enhancedDiscount.keep? enhancedItem.price: tmpPrice;
                 }
                 else {
-                    enhancedDiscount.push({
+                    enhancedDiscounts.push({
                         'label': label,
+                        'keep': discount.keep,
                         'rate': discount.rate,
                         'scope': discount.scope,
                         'price': tmpPrice * enhancedItem.amount
@@ -107,7 +108,7 @@ Strategy.GetPromotions = function (enhancedItems) {
     var enhancedPromotions = [];
     _.forEach(enhancedItems, function (enhancedItem) {
         _.forEach(Scope.types, function (val, key) {
-            if (enhancedItem.promotion & val != 0) {
+            if ((enhancedItem.promotion & val) != 0) {
                 var promotion = enhancedItem.promotions[val];
                 var label = promotion.scope.GetLabel();
                 var enhancedPromotion = _.findWhere(enhancedPromotions, {'label': label});

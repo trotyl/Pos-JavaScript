@@ -211,4 +211,57 @@ describe('Strategy: ', function () {
             expect(enhancedItems[3].promotions[2]).toBeFalsy();
         });
     });
+
+    describe('should be able to get the right discount list', function () {
+        var scope0 = new SingleScope('雪碧');
+        var scope1 = new SingleScope('可口可乐350ml');
+        var scope2 = new BrandScope('康师傅');
+        var scope3 = new BrandScope('可口可乐');
+
+        var input = [
+            { 'ITEM000000' : 20 },
+            { 'ITEM000010' : 20 },
+            { 'ITEM000005' : 30 },
+            { 'ITEM000003' : 12 }
+        ];
+        var strategy;
+        var enhancedItems;
+
+        beforeEach(function () {
+            strategy = new Strategy(allItems, [], [], {0: 0});
+            enhancedItems = strategy.GetEnhancedItems(input);
+        });
+
+        it('should work with only SingleScope.', function () {
+            discounts = [
+                new Discount(0.9, scope0, true),
+                new Discount(0.95, scope1, true),
+            ];
+            Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
+            var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
+            expect(enhancedDiscounts.length).toEqual(1);
+
+        });
+
+        it('should work with only BrandScope.', function () {
+            discounts = [
+                new Discount(0.9, scope2, true),
+                new Discount(0.95, scope3, true),
+            ];
+            Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
+            var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
+            expect(enhancedDiscounts.length).toEqual(2);
+
+        });
+
+        it('should work with both SingleScope and BrandScope.', function () {
+            discounts = [
+                new Discount(0.9, scope1, true),
+                new Discount(0.95, scope3, true),
+            ];
+            Strategy.EnsureDiscounts(discounts, {3: 3}, enhancedItems);
+            var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
+            expect(enhancedDiscounts.length).toEqual(2);
+        });
+    });
 });
