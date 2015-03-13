@@ -1,6 +1,29 @@
-function Formatter(){
+function Formatter() {
 
 }
+
+Formatter.numberMap = {
+    1: '一',
+    2: '二',
+    3: '三',
+    4: '四',
+    5: '五',
+    6: '六',
+    7: '七',
+    8: '八',
+    9: '九'
+};
+
+Formatter.GetChineseNumber = function (number) {
+    var res = '';
+    var left = parseInt(number);
+    res += Formatter.numberMap[left];
+    if (left != number) {
+        var right = parseInt((number - left) * 10);
+        res += Formatter.numberMap[right];
+    }
+    return res;
+};
 
 
 Formatter.prototype.format = function (prettyItems, prettyDiscounts, prettyPromotions) {
@@ -12,11 +35,11 @@ Formatter.prototype.format = function (prettyItems, prettyDiscounts, prettyPromo
 
 };
 
-Formatter.prototype.GetDateTime = function() {
+Formatter.prototype.GetDateTime = function () {
     return moment().format('YYYY年MM月DD日 HH:mm:ss');
 };
 
-Formatter.prototype.GetSplitter = function() {
+Formatter.prototype.GetSplitter = function () {
     return '\n----------------------';
 };
 
@@ -33,12 +56,12 @@ Formatter.prototype.GetItemList = function (prettyItems) {
     return itemString;
 };
 
-Formatter.GetPromotionList = function (enhancedDiscounts, enhancedPromotions) {
-    var promotionStringList = [];
-    _.forEach(enhancedDiscounts, function (enhancedItem) {
-        promotionStringList.push(
-
-        )
+Formatter.GetPromotionList = function (prettyDiscounts, prettyPromotions) {
+    var promotionString = '';
+    _.forEach(prettyDiscounts, function (prettyDiscount) {
+        promotionString += '名称：';
+        var desc = prettyDiscount.discount.scope.GetDescription();
+        promotionString += desc ? '打折' :
     });
 
 };

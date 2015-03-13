@@ -20,11 +20,12 @@ SingleScope.prototype.isInRange = function (item) {
     return this.name == item.name;
 };
 
-/**
- * @return {string}
- */
 SingleScope.prototype.GetLabel = function () {
     return '$LabelOfSingleScope' + this.name;
+};
+
+SingleScope.prototype.GetDescription = function () {
+    return this.name + '单品';
 };
 
 
@@ -38,11 +39,12 @@ BrandScope.prototype.isInRange = function (item) {
     return this.brand == item.brand;
 };
 
-/**
- * @return {string}
- */
 BrandScope.prototype.GetLabel = function () {
     return '$LabelOfBrandScope' + this.brand;
+};
+
+BrandScope.prototype.GetDescription = function () {
+    return this.brand + '品牌';
 };
 
 
@@ -63,9 +65,10 @@ FullScope.prototype.isInRange = function (item) {
     return res;
 };
 
-/**
- * @return {string}
- */
 FullScope.prototype.GetLabel = function () {
     return '$LabelOfFullScope';
+};
+
+FullScope.prototype.GetDescription = function () {
+    return '';
 };
