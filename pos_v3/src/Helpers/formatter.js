@@ -56,12 +56,13 @@ Formatter.prototype.GetItemList = function (prettyItems) {
     return itemString;
 };
 
-Formatter.GetPromotionList = function (prettyDiscounts, prettyPromotions) {
-    var promotionString = '';
+Formatter.prototype.GetDiscountList = function (prettyDiscounts) {
+    var discountString = '';
     _.forEach(prettyDiscounts, function (prettyDiscount) {
-        promotionString += '名称：';
-        var desc = prettyDiscount.discount.scope.GetDescription();
-        promotionString += desc ? '打折' : ''
+        discountString += '名称：';
+        var desc = prettyDiscount.scope.GetDescription();
+        discountString += desc ? desc + '打折' : (Formatter.GetChineseNumber(prettyDiscount.discount) + '折');
+        discountString += '，金额：' + prettyDiscount.reduction.toFixed(2) + '元\n';
     });
-
+    return discountString;
 };
