@@ -37,7 +37,7 @@ describe('Strategy: ', function () {
         expect(enhancedItems.length).toEqual(4);
         expect(enhancedItems[0].item.barcode).toEqual('ITEM000000');
         expect(enhancedItems[0].amount).toEqual(20);
-        expect(enhancedItems[0].price).toEqual(3.00);
+        expect(enhancedItems[0].total).toEqual(60);
     });
 
     describe('should be able to ensure the right valid discounts.', function () {
@@ -64,11 +64,10 @@ describe('Strategy: ', function () {
         it('should work with only SingleScope.', function () {
             discounts = [
                 new Discount(0.9, scope0, true),
-                new Discount(0.95, scope1, true),
+                new Discount(0.95, scope1, true)
             ];
             Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
             expect(enhancedItems.length).toEqual(4);
-            expect(enhancedItems[0].price).toEqual(3.00);
             expect(enhancedItems[0].discounts[1]).toBeTruthy();
             expect(enhancedItems[0].discounts[2]).toBeFalsy();
 
@@ -85,11 +84,10 @@ describe('Strategy: ', function () {
         it('should work with only BrandScope.', function () {
             discounts = [
                 new Discount(0.9, scope2, true),
-                new Discount(0.95, scope3, true),
+                new Discount(0.95, scope3, true)
             ];
             Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
             expect(enhancedItems.length).toEqual(4);
-            expect(enhancedItems[0].price).toEqual(3.00);
             expect(enhancedItems[0].discounts[1]).toBeFalsy();
             expect(enhancedItems[0].discounts[2]).toBeTruthy();
 
@@ -106,11 +104,10 @@ describe('Strategy: ', function () {
         it('should work with both SingleScope and BrandScope.', function () {
             discounts = [
                 new Discount(0.9, scope1, true),
-                new Discount(0.95, scope3, true),
+                new Discount(0.95, scope3, true)
             ];
             Strategy.EnsureDiscounts(discounts, {3: 3}, enhancedItems);
             expect(enhancedItems.length).toEqual(4);
-            expect(enhancedItems[0].price).toEqual(3.00);
             expect(enhancedItems[0].discounts[1]).toBeTruthy();
             expect(enhancedItems[0].discounts[2]).toBeTruthy();
 
@@ -150,11 +147,10 @@ describe('Strategy: ', function () {
         it('should work with only SingleScope.', function () {
             promotions = [
                 new Promotion(100, 5, scope0, true),
-                new Promotion(100, 5, scope1, true),
+                new Promotion(100, 5, scope1, true)
             ];
             Strategy.EnsurePromotions(promotions, {}, enhancedItems);
             expect(enhancedItems.length).toEqual(4);
-            expect(enhancedItems[0].price).toEqual(3.00);
             expect(enhancedItems[0].promotions[1]).toBeTruthy();
             expect(enhancedItems[0].promotions[2]).toBeFalsy();
 
@@ -171,11 +167,10 @@ describe('Strategy: ', function () {
         it('should work with only BrandScope.', function () {
             promotions = [
                 new Promotion(100, 2, scope2, true),
-                new Promotion(100, 2, scope3, true),
+                new Promotion(100, 2, scope3, true)
             ];
             Strategy.EnsurePromotions(promotions, {}, enhancedItems);
             expect(enhancedItems.length).toEqual(4);
-            expect(enhancedItems[0].price).toEqual(3.00);
             expect(enhancedItems[0].promotions[1]).toBeFalsy();
             expect(enhancedItems[0].promotions[2]).toBeTruthy();
 
@@ -192,11 +187,10 @@ describe('Strategy: ', function () {
         it('should work with both SingleScope and BrandScope.', function () {
             promotions = [
                 new Promotion(100, 5, scope1, true),
-                new Promotion(100, 2, scope3, true),
+                new Promotion(100, 2, scope3, true)
             ];
             Strategy.EnsurePromotions(promotions, {3: 3}, enhancedItems);
             expect(enhancedItems.length).toEqual(4);
-            expect(enhancedItems[0].price).toEqual(3.00);
             expect(enhancedItems[0].promotions[1]).toBeTruthy();
             expect(enhancedItems[0].promotions[2]).toBeTruthy();
 
