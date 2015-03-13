@@ -26,13 +26,20 @@ Formatter.GetChineseNumber = function (number) {
 };
 
 
-Formatter.prototype.format = function (prettyItems, prettyDiscounts, prettyPromotions) {
-
-
-    var name = '***<没钱赚商店>购物清单***';
-    var timeStamp = '打印时间：' + Formatter.getDateTime();
-
-
+Formatter.prototype.format = function (prettyItems, prettyDiscounts, prettyPromotions, prettyInfo) {
+    var res = '';
+    res += '***<没钱赚商店>购物清单***\n';
+    res += '打印时间：' + Formatter.getDateTime() + '\n';
+    res += this.GetSplitter();
+    res += this.GetItemList(prettyItems);
+    res += this.GetSplitter();
+    res += '优惠信息：\n';
+    res += this.GetDiscountList(prettyDiscounts);
+    res += this.GetPromotionList(prettyPromotions);
+    res += this.GetSplitter();
+    res += this.GetSummary(prettyInfo);
+    res += '**********************\n';
+    return res;
 };
 
 Formatter.prototype.GetDateTime = function () {
