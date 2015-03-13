@@ -134,3 +134,14 @@ Strategy.GetPromotions = function (enhancedItems) {
     return enhancedPromotions;
 };
 
+Strategy.PrettifyDiscounts = function (enhancedDiscounts) {
+    var prettyDiscounts = [];
+    for (var i in enhancedDiscounts) {
+        prettyDiscounts.push({
+            'scope': enhancedDiscounts[i].scope,
+            'discount': enhancedDiscounts[i].rate,
+            'reduction': enhancedDiscounts[i].reduction.toFixed(2)
+        })
+    }
+    return prettyDiscounts;
+};
