@@ -15,8 +15,8 @@ function Strategy(allItems, benefits, discountMutual) {
 //    var enhancedItems = this.GetEnhancedItems(input);
 //    Strategy.EnsureDiscount(this.discounts, this.discountMutual, enhancedItems);
 //    Strategy.EnsurePromotion(this.promotions, {}, enhancedItems);
-//    var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
-//    var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
+//    var enhancedDiscounts = Strategy.GetDiscount(enhancedItems);
+//    var enhancedPromotions = Strategy.GetPromotion(enhancedItems);
 //    var prettyItems = Strategy.PrettifyItems(enhancedItems);
 //    var prettyDiscounts = Strategy.PrettifyDiscounts(enhancedDiscounts);
 //    var prettyPromotions = Strategy.PrettifyPromotions(enhancedPromotions);
@@ -32,11 +32,20 @@ Strategy.prototype.GenerateResult = function (input, formatter, output) {
     for (var i in this.benefits) {
         if (this.benefits[i].type == Benefit.types.discount) {
             Strategy.EnsureDiscount(this.discounts, this.discountMutual, enhancedItems);
-            Strategy.GetDiscounts(enhancedItems, enhancedBenefits);
         }
         else if (this.benefits[i].type == Benefit.types.promotion) {
             Strategy.EnsurePromotion(this.promotions, {}, enhancedItems);
-            Strategy.GetPromotions(enhancedItems, enhancedBenefits);
+        }
+        else {
+            throw new Error('Type of the benefit is not available: ' + this.benefits[i].type);
+        }
+    }
+    for (var j in enhancedItems) {
+        if (this.benefits[i].type == Benefit.types.discount) {
+            Strategy.GetDiscount(enhancedItems[j], enhancedBenefits);
+        }
+        else if (this.benefits[i].type == Benefit.types.promotion) {
+            Strategy.GetPromotion(enhancedItems[j], enhancedBenefits);
         }
         else {
             throw new Error('Type of the benefit is not available: ' + this.benefits[i].type);
@@ -71,7 +80,7 @@ Strategy.prototype.GetEnhancedItems = function (input) {
 };
 
 Strategy.EnsureDiscount = function (discount, mutual, enhancedItems) {
-    _.forEach(enhancedItems, function (enhancedItem) {
+    discount && _.forEach(enhancedItems, function (enhancedItem) {
         if (!discount.scope.isInRange(enhancedItem.item)) {
             return;
         }
@@ -99,7 +108,7 @@ Strategy.EnsureDiscount = function (discount, mutual, enhancedItems) {
 };
 
 Strategy.EnsurePromotion = function (promotion, mutual, enhancedItems) {
-    _.forEach(enhancedItems, function (enhancedItem) {
+    promotion && _.forEach(enhancedItems, function (enhancedItem) {
         if (!promotion.scope.isInRange(enhancedItem.item)) {
             return;
         }
@@ -108,7 +117,7 @@ Strategy.EnsurePromotion = function (promotion, mutual, enhancedItems) {
     }, this);
 };
 
-//Strategy.GetDiscounts = function (enhancedItems) {
+//Strategy.GetDiscount = function (enhancedItems) {
 //    var enhancedDiscounts = [];
 //    _.forEach(enhancedItems, function (enhancedItem) {
 //        _.forEach(Scope.types, function (val, key) {
@@ -136,34 +145,32 @@ Strategy.EnsurePromotion = function (promotion, mutual, enhancedItems) {
 //    return enhancedDiscounts;
 //};
 
-Strategy.GetDiscounts = function (eItems, eBenefits) {
-    _.forEach(eItems, function (eItem) {
-        _.forEach(Scope.types, function (val, key) {
-            if ((eItem.discount & val) != 0) {
-                var discount = eItem.discounts[val];
-                var label = discount.scope.GetLabel();
-                var eDiscount = _.findWhere(eBenefits, {'type': Benefit.types.discount, 'label': label});
-                var tmpPrice = eItem.total * discount.rate;
-                if (eDiscount) {
-                    eDiscount.reduction += (eItem.total - tmpPrice);
-                    eItem.total = eDiscount.keep ? eItem.total : tmpPrice;
-                }
-                else {
-                    eBenefits.push({
-                        'type': Benefit.types.discount,
-                        'label': label,
-                        'keep': discount.keep,
-                        'rate': discount.rate,
-                        'scope': discount.scope,
-                        'reduction': eItem.total - tmpPrice
-                    })
-                }
+Strategy.GetDiscount = function (eItem, eBenefits) {
+    _.forEach(Scope.types, function (val, key) {
+        if ((eItem.discount & val) != 0) {
+            var discount = eItem.discounts[val];
+            var label = discount.scope.GetLabel();
+            var eDiscount = _.findWhere(eBenefits, {'type': Benefit.types.discount, 'label': label});
+            var tmpPrice = eItem.total * discount.rate;
+            if (eDiscount) {
+                eDiscount.reduction += (eItem.total - tmpPrice);
+                eItem.total = eDiscount.keep ? eItem.total : tmpPrice;
             }
-        })
-    });
+            else {
+                eBenefits.push({
+                    'type': Benefit.types.discount,
+                    'label': label,
+                    'keep': discount.keep,
+                    'rate': discount.rate,
+                    'scope': discount.scope,
+                    'reduction': eItem.total - tmpPrice
+                })
+            }
+        }
+    })
 };
 
-//Strategy.GetPromotions = function (enhancedItems) {
+//Strategy.GetPromotion = function (enhancedItems) {
 //    var enhancedPromotions = [];
 //    _.forEach(enhancedItems, function (enhancedItem) {
 //        _.forEach(Scope.types, function (val, key) {
@@ -193,39 +200,37 @@ Strategy.GetDiscounts = function (eItems, eBenefits) {
 //    return enhancedPromotions;
 //};
 
-Strategy.GetPromotions = function (eItems, eBenefits) {
+Strategy.GetPromotion = function (eItem, eBenefits) {
     var reductionCompute = function (current, from, to) {
         return current > from ? parseInt(current / from) * to : 0;
     };
 
-    _.forEach(eItems, function (eItem) {
-        _.forEach(Scope.types, function (val, key) {
-            if ((eItem.promotion & val) != 0) {
-                var promotion = eItem.promotions[val];
-                var label = promotion.scope.GetLabel();
-                var ePromotion = _.findWhere(eBenefits, {'type': Benefit.types.promotion, 'label': label});
-                //var tmpPrice = eItem.total;
-                if (ePromotion) {
-                    ePromotion.total += eItem.total;
-                    var newReduction = reductionCompute(ePromotion.total, promotion.from, promotion.to);
-                    eItem.total = ePromotion.keep ? eItem.total : (eItem.total - newReduction + ePromotion.reduction);
-                    ePromotion.reduction = newReduction;
-                }
-                else {
-                    eBenefits.push({
-                        'type': Benefit.types.promotion,
-                        'label': label,
-                        'keep': promotion.keep,
-                        'from': promotion.from,
-                        'to': promotion.to,
-                        'scope': promotion.scope,
-                        'total': eItem.total,
-                        'reduction': reductionCompute(eItem.total, promotion.from, promotion.to)
-                    })
-                }
+    _.forEach(Scope.types, function (val, key) {
+        if ((eItem.promotion & val) != 0) {
+            var promotion = eItem.promotions[val];
+            var label = promotion.scope.GetLabel();
+            var ePromotion = _.findWhere(eBenefits, {'type': Benefit.types.promotion, 'label': label});
+            //var tmpPrice = eItem.total;
+            if (ePromotion) {
+                ePromotion.total += eItem.total;
+                var newReduction = reductionCompute(ePromotion.total, promotion.from, promotion.to);
+                eItem.total = ePromotion.keep ? eItem.total : (eItem.total - newReduction + ePromotion.reduction);
+                ePromotion.reduction = newReduction;
             }
-        })
-    });
+            else {
+                eBenefits.push({
+                    'type': Benefit.types.promotion,
+                    'label': label,
+                    'keep': promotion.keep,
+                    'from': promotion.from,
+                    'to': promotion.to,
+                    'scope': promotion.scope,
+                    'total': eItem.total,
+                    'reduction': reductionCompute(eItem.total, promotion.from, promotion.to)
+                })
+            }
+        }
+    })
 };
 
 Strategy.PrettifyItems = function (enhancedItems) {

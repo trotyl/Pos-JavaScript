@@ -252,7 +252,7 @@ describe('Strategy: ', function () {
                 Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetDiscounts(enhancedItems, enhancedBenefits);
+            Strategy.GetDiscount(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(1);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(3);
         });
@@ -266,7 +266,7 @@ describe('Strategy: ', function () {
                 Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetDiscounts(enhancedItems, enhancedBenefits);
+            Strategy.GetDiscount(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(2);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(7);
             expect(enhancedBenefits[1].reduction).toBeCloseTo(13.5);
@@ -281,7 +281,7 @@ describe('Strategy: ', function () {
                 Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetDiscounts(enhancedItems, enhancedBenefits);
+            Strategy.GetDiscount(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(2);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(6);
             expect(enhancedBenefits[1].reduction).toBeCloseTo(7);
@@ -317,7 +317,7 @@ describe('Strategy: ', function () {
                 Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetPromotions(enhancedItems, enhancedBenefits);
+            Strategy.GetPromotion(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(1);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(0);
         });
@@ -331,7 +331,7 @@ describe('Strategy: ', function () {
                 Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetPromotions(enhancedItems, enhancedBenefits);
+            Strategy.GetPromotion(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(2);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(2);
             expect(enhancedBenefits[1].reduction).toBeCloseTo(2);
@@ -346,7 +346,7 @@ describe('Strategy: ', function () {
                 Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetPromotions(enhancedItems, enhancedBenefits);
+            Strategy.GetPromotion(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(2);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(0);
             expect(enhancedBenefits[1].reduction).toBeCloseTo(2);
