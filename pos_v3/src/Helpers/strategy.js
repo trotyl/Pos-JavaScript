@@ -101,9 +101,6 @@ Strategy.GetDiscounts = function (enhancedItems) {
             }
         })
     });
-    _.forEach(enhancedDiscounts, function (enhancedDiscount) {
-        enhancedDiscount.reduction = enhancedDiscount.reduction.toFixed(2);
-    });
     return enhancedDiscounts;
 };
 
@@ -118,7 +115,7 @@ Strategy.GetPromotions = function (enhancedItems) {
                 var tmpPrice = enhancedItem.price * enhancedItem.amount;
                 if (enhancedPromotion) {
                     enhancedPromotion.total += tmpPrice;
-                    enhancedPromotion.reduction = tmpPrice > promotion.from ? parseInt(tmpPrice / promotion.from) * promotion.to : 0;
+                    enhancedPromotion.reduction = enhancedPromotion.total > promotion.from ? parseInt(enhancedPromotion.total / promotion.from) * promotion.to : 0;
                 }
                 else {
                     enhancedPromotions.push({
@@ -133,9 +130,6 @@ Strategy.GetPromotions = function (enhancedItems) {
                 }
             }
         })
-    });
-    _.forEach(enhancedPromotions, function (enhancedPromotion) {
-        enhancedPromotion.reduction = enhancedPromotion.reduction.toFixed(2);
     });
     return enhancedPromotions;
 };
