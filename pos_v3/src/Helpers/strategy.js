@@ -1,15 +1,14 @@
-function Strategy(allItems, discounts, promotions, discountMutual, keepOriginal) {
+function Strategy(allItems, discounts, promotions, discountMutual) {
     this.allItems = allItems;
     this.discounts = discounts;
     this.promotions = promotions;
     this.discountMutual = discountMutual;
-    this.keepOriginal = keepOriginal;
 }
 
 Strategy.prototype.GenerageResult = function (input, formatter, output) {
     var enhancedItems = Strategy.GetEnhancedItems(input);
     Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
-    var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems, this.keepOriginal);
+    var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
     var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
 
     var result = formatter.format(enhancedItems, enhancedDiscounts, enhancedPromotions);

@@ -19,9 +19,8 @@ FirstStrategyFactory.prototype.GetStrategy = function () {
             new FullPromotionFactory().GetPromotion([scope0, scope1, scope2])
         ],
         {
-            3: 2
-        },
-        false
+            0x03: 0x02
+        }
     )
 };
 
@@ -42,9 +41,8 @@ SecondStrategyFactory.prototype.GetStrategy = function () {
             new FullPromotionFactory().GetPromotion([scope0, scope1])
         ],
         {
-            3: 1
-        },
-        false
+            0x03: 0x01
+        }
     )
 };
 
@@ -65,9 +63,8 @@ ThirdStrategyFactory.prototype.GetStrategy = function () {
             new FullPromotionFactory().GetPromotion([scope2])
         ],
         {
-            3: 3
-        },
-        false
+            0x03: 0x03
+        }
     )
 };
 

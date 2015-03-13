@@ -4,9 +4,9 @@ function Scope() {
 }
 
 Scope.types = {
-    single: 1,
-    brand: 2,
-    full: 4
+    single: 0x01,
+    brand: 0x02,
+    full: 0x04
 };
 
 
