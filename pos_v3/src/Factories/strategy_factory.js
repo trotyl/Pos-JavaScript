@@ -33,7 +33,7 @@ SecondStrategyFactory.prototype.GetStrategy = function () {
             new Discount(0.9, scope0, true),
             new Discount(0.95, scope1, true),
             new SinglePromotionFactory().GetPromotion('云山荔枝'),
-            new BrandPromotionFactory().GetPromotion('康师傅'),
+            new BrandPromotionFactory().GetPromotion('康师傅')
         ],
         {
             0x03: 0x01

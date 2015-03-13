@@ -31,29 +31,23 @@ Strategy.prototype.GenerateResult = function (input, formatter, output) {
     var enhancedBenefits = [];
     for (var i in this.benefits) {
         if (this.benefits[i].type == Benefit.types.discount) {
-            Strategy.EnsureDiscount(this.discounts, this.discountMutual, enhancedItems);
+            Strategy.EnsureDiscount(this.benefits[i], this.discountMutual, enhancedItems);
         }
         else if (this.benefits[i].type == Benefit.types.promotion) {
-            Strategy.EnsurePromotion(this.promotions, {}, enhancedItems);
+            Strategy.EnsurePromotion(this.benefits[i], {}, enhancedItems);
         }
         else {
             throw new Error('Type of the benefit is not available: ' + this.benefits[i].type);
         }
     }
+    console.log(enhancedItems);
     for (var j in enhancedItems) {
-        if (this.benefits[i].type == Benefit.types.discount) {
-            Strategy.GetDiscount(enhancedItems[j], enhancedBenefits);
-        }
-        else if (this.benefits[i].type == Benefit.types.promotion) {
-            Strategy.GetPromotion(enhancedItems[j], enhancedBenefits);
-        }
-        else {
-            throw new Error('Type of the benefit is not available: ' + this.benefits[i].type);
-        }
+        Strategy.GetDiscount(enhancedItems[j], enhancedBenefits);
     }
-
+    console.log(enhancedBenefits);
     var prettyItems = Strategy.PrettifyItems(enhancedItems);
     var prettyBenefits = Strategy.PrettifyBenefits(enhancedBenefits);
+    console.log(prettyBenefits);
     var prettifySummary = Strategy.PrettifySummary(prettyItems, prettyBenefits);
 
     var result = formatter.format(prettyItems, prettyBenefits, prettifySummary);
@@ -274,7 +268,7 @@ Strategy.PrettifyItems = function (enhancedItems) {
 Strategy.PrettifyBenefits = function (enhancedBenefits) {
     var prettyBenefits = [];
     for (var i in enhancedBenefits) {
-        if (!enhancedBenefits[i].reduction <= 0) {
+        if (!enhancedBenefits[i].reduction > 0) {
             return
         }
         var enhancedBenefit;
