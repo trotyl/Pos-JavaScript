@@ -156,3 +156,34 @@ Strategy.PrettifyDiscounts = function (enhancedDiscounts) {
     }
     return prettyDiscounts;
 };
+
+Strategy.PrettifyPromotions = function (enhancedPromotions) {
+    var prettyPromotions = [];
+    for (var i in enhancedPromotions) {
+        prettyPromotions.push({
+            'scope': enhancedPromotions[i].scope,
+            'from': enhancedPromotions[i].from,
+            'to': enhancedPromotions[i].to,
+            'reduction': enhancedPromotions[i].reduction
+        })
+    }
+    return prettyPromotions;
+};
+
+Strategy.PrettifySummary = function (PrettyItems, prettyDiscounts, prettyPromotions) {
+    var sum = 0;
+    var reduction = 0;
+    for(var i in PrettyItems){
+        sum += PrettyItems[i].item.price * PrettyItems[i].amount;
+    }
+    for(var j in prettyDiscounts){
+        reduction += prettyDiscounts[j].reduction;
+    }
+    for(var k in prettyPromotions){
+        reduction += prettyPromotions[k].reduction;
+    }
+    return {
+        'sum': sum,
+        'reduction': reduction
+    }
+};
