@@ -134,13 +134,24 @@ Strategy.GetPromotions = function (enhancedItems) {
     return enhancedPromotions;
 };
 
+Strategy.PrettifyItems = function (enhancedItems) {
+    var PrettyItems = [];
+    for (var i in enhancedItems) {
+        PrettyItems.push({
+            'item': enhancedItems[i].item,
+            'amount': enhancedItems[i].amount
+        })
+    }
+    return PrettyItems;
+};
+
 Strategy.PrettifyDiscounts = function (enhancedDiscounts) {
     var prettyDiscounts = [];
     for (var i in enhancedDiscounts) {
         prettyDiscounts.push({
             'scope': enhancedDiscounts[i].scope,
             'discount': enhancedDiscounts[i].rate,
-            'reduction': enhancedDiscounts[i].reduction.toFixed(2)
+            'reduction': enhancedDiscounts[i].reduction
         })
     }
     return prettyDiscounts;
