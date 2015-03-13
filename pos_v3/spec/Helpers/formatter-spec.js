@@ -22,6 +22,11 @@ describe('Formatter: ', function () {
         formatter = new Formatter();
     });
 
+    it('should be able to get the right chinese number', function () {
+        expect(Formatter.GetChineseNumber(9)).toEqual('九');
+        expect(Formatter.GetChineseNumber(9.5)).toEqual('九五');
+    });
+
     it('should be able to generate the correct item list.', function () {
         expect(formatter.GetItemList(prettyItems)).toEqual(''+
         '名称：可口可乐350ml，数量：20瓶，单价：3.00(元)，小计：60.00(元)\n' +

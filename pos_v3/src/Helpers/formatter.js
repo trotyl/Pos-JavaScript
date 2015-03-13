@@ -61,7 +61,7 @@ Formatter.GetPromotionList = function (prettyDiscounts, prettyPromotions) {
     _.forEach(prettyDiscounts, function (prettyDiscount) {
         promotionString += '名称：';
         var desc = prettyDiscount.discount.scope.GetDescription();
-        promotionString += desc ? '打折' :
+        promotionString += desc ? '打折' : ''
     });
 
 };
