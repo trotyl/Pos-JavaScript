@@ -16,9 +16,9 @@ describe('Pos ', function () {
         ];
         number = 1;
 
-        spyOn(console, 'log');
-        printInventory(input, number);
-        expect(console.log).toHaveBeenCalledWith('');
+        spyOn(output, 'log');
+        printInventory(input, number, output);
+        expect(output.log).toHaveBeenCalledWith('');
 
     });
 });

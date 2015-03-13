@@ -66,7 +66,10 @@ describe('Strategy: ', function () {
                 new Discount(0.9, scope0, true),
                 new Discount(0.95, scope1, true)
             ];
-            Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsureDiscount(discounts[i], {}, enhancedItems);
+            }
+
             expect(enhancedItems.length).toEqual(4);
             expect(enhancedItems[0].discounts[1]).toBeTruthy();
             expect(enhancedItems[0].discounts[2]).toBeFalsy();
@@ -86,7 +89,10 @@ describe('Strategy: ', function () {
                 new Discount(0.9, scope2, true),
                 new Discount(0.95, scope3, true)
             ];
-            Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsureDiscount(discounts[i], {}, enhancedItems);
+            }
+
             expect(enhancedItems.length).toEqual(4);
             expect(enhancedItems[0].discounts[1]).toBeFalsy();
             expect(enhancedItems[0].discounts[2]).toBeTruthy();
@@ -106,7 +112,10 @@ describe('Strategy: ', function () {
                 new Discount(0.9, scope1, true),
                 new Discount(0.95, scope3, true)
             ];
-            Strategy.EnsureDiscounts(discounts, {3: 3}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
+            }
+
             expect(enhancedItems.length).toEqual(4);
             expect(enhancedItems[0].discounts[1]).toBeTruthy();
             expect(enhancedItems[0].discounts[2]).toBeTruthy();
@@ -149,7 +158,10 @@ describe('Strategy: ', function () {
                 new Promotion(100, 5, scope0, true),
                 new Promotion(100, 5, scope1, true)
             ];
-            Strategy.EnsurePromotions(promotions, {}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
+            }
+
             expect(enhancedItems.length).toEqual(4);
             expect(enhancedItems[0].promotions[1]).toBeTruthy();
             expect(enhancedItems[0].promotions[2]).toBeFalsy();
@@ -169,7 +181,10 @@ describe('Strategy: ', function () {
                 new Promotion(100, 2, scope2, true),
                 new Promotion(100, 2, scope3, true)
             ];
-            Strategy.EnsurePromotions(promotions, {}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
+            }
+
             expect(enhancedItems.length).toEqual(4);
             expect(enhancedItems[0].promotions[1]).toBeFalsy();
             expect(enhancedItems[0].promotions[2]).toBeTruthy();
@@ -189,7 +204,10 @@ describe('Strategy: ', function () {
                 new Promotion(100, 5, scope1, true),
                 new Promotion(100, 2, scope3, true)
             ];
-            Strategy.EnsurePromotions(promotions, {3: 3}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
+            }
+
             expect(enhancedItems.length).toEqual(4);
             expect(enhancedItems[0].promotions[1]).toBeTruthy();
             expect(enhancedItems[0].promotions[2]).toBeTruthy();
@@ -228,9 +246,11 @@ describe('Strategy: ', function () {
         it('should work with only SingleScope.', function () {
             discounts = [
                 new Discount(0.9, scope0, true),
-                new Discount(0.95, scope1, true),
+                new Discount(0.95, scope1, true)
             ];
-            Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
+            }
             var enhancedBenefits = [];
             Strategy.GetDiscounts(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(1);
@@ -240,9 +260,11 @@ describe('Strategy: ', function () {
         it('should work with only BrandScope.', function () {
             discounts = [
                 new Discount(0.9, scope2, true),
-                new Discount(0.95, scope3, true),
+                new Discount(0.95, scope3, true)
             ];
-            Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
+            }
             var enhancedBenefits = [];
             Strategy.GetDiscounts(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(2);
@@ -253,9 +275,11 @@ describe('Strategy: ', function () {
         it('should work with both SingleScope and BrandScope.', function () {
             discounts = [
                 new Discount(0.9, scope1, true),
-                new Discount(0.95, scope3, true),
+                new Discount(0.95, scope3, true)
             ];
-            Strategy.EnsureDiscounts(discounts, {3: 3}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
+            }
             var enhancedBenefits = [];
             Strategy.GetDiscounts(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(2);
@@ -287,9 +311,11 @@ describe('Strategy: ', function () {
         it('should work with only SingleScope.', function () {
             promotions = [
                 new Promotion(100, 5, scope0, true),
-                new Promotion(100, 5, scope1, true),
+                new Promotion(100, 5, scope1, true)
             ];
-            Strategy.EnsurePromotions(promotions, {}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
+            }
             var enhancedBenefits = [];
             Strategy.GetPromotions(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(1);
@@ -299,9 +325,11 @@ describe('Strategy: ', function () {
         it('should work with only BrandScope.', function () {
             promotions = [
                 new Promotion(100, 2, scope2, true),
-                new Promotion(100, 2, scope3, true),
+                new Promotion(100, 2, scope3, true)
             ];
-            Strategy.EnsurePromotions(promotions, {}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
+            }
             var enhancedBenefits = [];
             Strategy.GetPromotions(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(2);
@@ -312,9 +340,11 @@ describe('Strategy: ', function () {
         it('should work with both SingleScope and BrandScope.', function () {
             promotions = [
                 new Promotion(100, 5, scope1, true),
-                new Promotion(100, 2, scope3, true),
+                new Promotion(100, 2, scope3, true)
             ];
-            Strategy.EnsurePromotions(promotions, {3: 3}, enhancedItems);
+            for(var i in discounts){
+                Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
+            }
             var enhancedBenefits = [];
             Strategy.GetPromotions(enhancedItems, enhancedBenefits);
             expect(enhancedBenefits.length).toEqual(2);

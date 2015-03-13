@@ -13,8 +13,8 @@ function Strategy(allItems, benefits, discountMutual) {
 
 //Strategy.prototype.GenerateResult = function (input, formatter, output) {
 //    var enhancedItems = this.GetEnhancedItems(input);
-//    Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
-//    Strategy.EnsurePromotions(this.promotions, {}, enhancedItems);
+//    Strategy.EnsureDiscount(this.discounts, this.discountMutual, enhancedItems);
+//    Strategy.EnsurePromotion(this.promotions, {}, enhancedItems);
 //    var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
 //    var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
 //    var prettyItems = Strategy.PrettifyItems(enhancedItems);
@@ -31,11 +31,11 @@ Strategy.prototype.GenerateResult = function (input, formatter, output) {
     var enhancedBenefits = [];
     for (var i in this.benefits) {
         if (this.benefits[i].type == Benefit.types.discount) {
-            Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
+            Strategy.EnsureDiscount(this.discounts, this.discountMutual, enhancedItems);
             Strategy.GetDiscounts(enhancedItems, enhancedBenefits);
         }
         else if (this.benefits[i].type == Benefit.types.promotion) {
-            Strategy.EnsurePromotions(this.promotions, {}, enhancedItems);
+            Strategy.EnsurePromotion(this.promotions, {}, enhancedItems);
             Strategy.GetPromotions(enhancedItems, enhancedBenefits);
         }
         else {
@@ -70,45 +70,41 @@ Strategy.prototype.GetEnhancedItems = function (input) {
     return enhancedItems;
 };
 
-Strategy.EnsureDiscounts = function (discounts, mutual, enhancedItems) {
-    _.forEach(discounts, function (discount) {
-        _.forEach(enhancedItems, function (enhancedItem) {
-            if (!discount.scope.isInRange(enhancedItem.item)) {
-                return;
-            }
+Strategy.EnsureDiscount = function (discount, mutual, enhancedItems) {
+    _.forEach(enhancedItems, function (enhancedItem) {
+        if (!discount.scope.isInRange(enhancedItem.item)) {
+            return;
+        }
 
-            var oldOne = enhancedItem.discount;
-            var newOne = discount.scope.type;
-            if ((oldOne & newOne) != 0) {
-                return;
-            }
-            if (enhancedItem.discount == 0) {
-                enhancedItem.discount = newOne;
-                enhancedItem.discounts[newOne] = discount;
-            }
-            else if ((mutual[oldOne | newOne] & newOne) == newOne) {
-                enhancedItem.discount = mutual[oldOne | newOne];
-                enhancedItem.discounts[newOne] = discount;
-                _.forEach(enhancedItem.discounts, function (val, key) {
-                    if ((key & enhancedItem.discount) == 0) {
-                        delete enhancedItem.discounts[key];
-                    }
-                }, this);
-            }
+        var oldOne = enhancedItem.discount;
+        var newOne = discount.scope.type;
+        if ((oldOne & newOne) != 0) {
+            return;
+        }
+        if (enhancedItem.discount == 0) {
+            enhancedItem.discount = newOne;
+            enhancedItem.discounts[newOne] = discount;
+        }
+        else if ((mutual[oldOne | newOne] & newOne) == newOne) {
+            enhancedItem.discount = mutual[oldOne | newOne];
+            enhancedItem.discounts[newOne] = discount;
+            _.forEach(enhancedItem.discounts, function (val, key) {
+                if ((key & enhancedItem.discount) == 0) {
+                    delete enhancedItem.discounts[key];
+                }
+            }, this);
+        }
 
-        }, this);
     }, this);
 };
 
-Strategy.EnsurePromotions = function (promotions, mutual, enhancedItems) {
-    _.forEach(promotions, function (promotion) {
-        _.forEach(enhancedItems, function (enhancedItem) {
-            if (!promotion.scope.isInRange(enhancedItem.item)) {
-                return;
-            }
-            enhancedItem.promotion |= promotion.scope.type;
-            enhancedItem.promotions[promotion.scope.type] = promotion;
-        }, this);
+Strategy.EnsurePromotion = function (promotion, mutual, enhancedItems) {
+    _.forEach(enhancedItems, function (enhancedItem) {
+        if (!promotion.scope.isInRange(enhancedItem.item)) {
+            return;
+        }
+        enhancedItem.promotion |= promotion.scope.type;
+        enhancedItem.promotions[promotion.scope.type] = promotion;
     }, this);
 };
 
