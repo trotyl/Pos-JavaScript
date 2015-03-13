@@ -16,33 +16,41 @@ describe('Strategy: ', function () {
             new Item('ITEM000006','体育用品', '胜利', '羽毛球', '个', 1.00)
         ];
 
-        strategy = new Strategy(allItems, [], [], {0: 0})
+        strategy = new Strategy(allItems, [], [], {0: 0});
     });
 
     it('should be able to constructed correctly.', function () {
+        strategy = new Strategy(allItems, [], [], {0: 0});
         expect(strategy.allItems).toEqual(allItems);
         expect(strategy.discounts.length).toEqual(0);
         expect(strategy.promotions.length).toEqual(0);
         expect(strategy.discountMutual[0]).toEqual(0);
     });
 
-    xdescribe(' ', function () {
-        var scope;
+    it('should be able to generate the enhanced items', function () {
+        var input = [
+            { 'ITEM000000' : 20 },
+            { 'ITEM000010' : 20 },
+            { 'ITEM000005' : 30 },
+            { 'ITEM000003' : 12 }
+        ];
+        var enhancedItems = strategy.GetEnhancedItems(input);
+        expect(enhancedItems.length).toEqual(4);
+        expect(enhancedItems[0].item.barcode).toEqual('ITEM000000');
+        expect(enhancedItems[0].amount).toEqual(20);
+        expect(enhancedItems[0].price).toEqual(3.00);
+    });
+
+    xdescribe('First Strategy ', function () {
+        var input;
+        var firstStrategy;
 
         beforeEach(function () {
-            scope = new SingleScope('可口可乐350ml');
+
+            firstStrategy = (new FirstStrategyFactory()).GetStrategy();
         });
 
-        it('should be able to constructed correctly.', function () {
-            expect(scope.type).toEqual(Scope.types.single);
-            expect(scope.name).toEqual('可口可乐350ml');
-        });
 
-        it('should be able to check if a item is in discount.', function () {
-            expect(scope.isInRange(item0)).toBeTruthy();
-            expect(scope.isInRange(item1)).toBeFalsy();
-            expect(scope.isInRange(item2)).toBeFalsy();
-        });
 
     });
 

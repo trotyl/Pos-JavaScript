@@ -15,11 +15,11 @@ Strategy.prototype.GenerageResult = function (input, formatter, output) {
     output.log(result);
 };
 
-Strategy.GetEnhancedItems = function (input) {
+Strategy.prototype.GetEnhancedItems = function (input) {
     var enhancedItems = [];
     _.forEach(input, function (fakeItem) {
         for (var barcode in fakeItem) {
-            var item = _.where(this.allItems, {'barcode': barcode});
+            var item = _.findWhere(this.allItems, {'barcode': barcode});
             enhancedItems.push({
                 'item': item,
                 'price': item.price,
