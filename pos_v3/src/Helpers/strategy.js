@@ -44,7 +44,7 @@ Strategy.prototype.GenerateResult = function (input, formatter, output) {
     }
 
     var prettyItems = Strategy.PrettifyItems(enhancedItems);
-    var prettyBenefits = Strategy.PrettifyDiscounts(enhancedBenefits);
+    var prettyBenefits = Strategy.PrettifyBenefits(enhancedBenefits);
     var prettifySummary = Strategy.PrettifySummary(prettyItems, prettyBenefits);
 
     var result = formatter.format(prettyItems, prettyBenefits, prettifySummary);
@@ -273,28 +273,58 @@ Strategy.PrettifyBenefits = function (enhancedBenefits) {
         if (!enhancedBenefits[i].reduction <= 0) {
             return
         }
-        prettyBenefits.push({
-            'scope': enhancedBenefits[i].scope,
-            'from': enhancedBenefits[i].from,
-            'to': enhancedBenefits[i].to,
-            'reduction': enhancedBenefits[i].reduction
-        });
-
+        var enhancedBenefit;
+        if(enhancedBenefits[i].type == Benefit.types.discount){
+            enhancedBenefit = {
+                'type': Benefit.types.discount,
+                'scope': enhancedBenefits[i].scope,
+                'discount': enhancedBenefits[i].rate,
+                'reduction': enhancedBenefits[i].reduction
+            }
+        }
+        else if(enhancedBenefits[i].type == Benefit.types.promotion){
+            enhancedBenefit = {
+                'type': Benefit.types.promotion,
+                'scope': enhancedBenefits[i].scope,
+                'from': enhancedBenefits[i].from,
+                'to': enhancedBenefits[i].to,
+                'reduction': enhancedBenefits[i].reduction
+            }
+        }
+        else {
+            throw new Error('Type of the benefit is not available: ' + enhancedBenefits[i].type)
+        }
+        prettyBenefits.push(enhancedBenefit);
     }
     return prettyBenefits;
 };
 
-Strategy.PrettifySummary = function (prettyItems, prettyDiscounts, prettyPromotions) {
+//Strategy.PrettifySummary = function (prettyItems, prettyDiscounts, prettyPromotions) {
+//    var sum = 0;
+//    var reduction = 0;
+//    for (var i in prettyItems) {
+//        sum += prettyItems[i].item.price * prettyItems[i].amount;
+//    }
+//    for (var j in prettyDiscounts) {
+//        reduction += prettyDiscounts[j].reduction;
+//    }
+//    for (var k in prettyPromotions) {
+//        reduction += prettyPromotions[k].reduction;
+//    }
+//    return {
+//        'sum': sum - reduction,
+//        'reduction': reduction
+//    }
+//};
+
+Strategy.PrettifySummary = function (prettyItems, prettyBenefits) {
     var sum = 0;
     var reduction = 0;
     for (var i in prettyItems) {
         sum += prettyItems[i].item.price * prettyItems[i].amount;
     }
-    for (var j in prettyDiscounts) {
-        reduction += prettyDiscounts[j].reduction;
-    }
-    for (var k in prettyPromotions) {
-        reduction += prettyPromotions[k].reduction;
+    for (var j in prettyBenefits) {
+        reduction += prettyBenefits[j].reduction;
     }
     return {
         'sum': sum - reduction,
