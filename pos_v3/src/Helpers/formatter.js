@@ -77,3 +77,10 @@ Formatter.prototype.GetPromotionList = function (prettyPromotions) {
     });
     return promotionString;
 };
+
+Formatter.prototype.GetSummary = function (prettyInfo) {
+    var res =
+        '总计：' + prettyInfo.sum + '(元)\n' +
+        '节省：' + prettyInfo.reduction + '(元)\n';
+    return res;
+};

@@ -1,6 +1,6 @@
 describe('Formatter: ', function () {
 
-    var prettyItems, prettyDiscounts, prettyPromotions;
+    var prettyItems, prettyDiscounts, prettyPromotions, prettyInfo;
     var formatter;
 
     beforeEach(function () {
@@ -22,6 +22,11 @@ describe('Formatter: ', function () {
             {'scope': new SingleScope('云山荔枝'), 'from': 100, 'to': 5, 'reduction': 5.00},
             {'scope': new FullScope([]), 'from': 100, 'to': 3, 'reduction': 3.00}
         ];
+
+        prettyInfo = {
+            'sum': 1234.56,
+            'reduction': 123.45
+        };
 
         formatter = new Formatter();
     });
@@ -54,6 +59,13 @@ describe('Formatter: ', function () {
             '名称：康师傅品牌满100减2，金额：4.00元\n' +
             '名称：云山荔枝满100减5，金额：5.00元\n' +
             '名称：满100减3，金额：3.00元\n'
+        );
+    });
+
+    it('should be able to generate the correct summary.', function () {
+        expect(formatter.GetSummary(prettyInfo)).toEqual(
+            '总计：1234.56(元)\n' +
+            '节省：123.45(元)\n'
         );
     });
 });
