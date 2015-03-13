@@ -1,4 +1,6 @@
-function printInventory(input, number) {
+function printInventory(input, number, output) {
+    number = number || 1;
+    output = output || console;
     var strategyFactory;
     switch (number) {
         case 1:
@@ -17,5 +19,5 @@ function printInventory(input, number) {
             throw new Error('Invalid number: ' + number);
     }
     var strategy = strategyFactory.GetStrategy();
-    strategy.GenerateResult(input, new Formatter(), console);
+    strategy.GenerateResult(input, new Formatter(), output);
 }

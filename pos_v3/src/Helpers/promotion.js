@@ -1,5 +1,6 @@
 function Promotion(from, to, scope, keep) {
     Promotion.Validate(from, to);
+    this.type = Benefit.types.promotion;
     this.from = from;
     this.to = to;
     this.scope = scope;
