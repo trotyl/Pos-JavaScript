@@ -66,3 +66,14 @@ Formatter.prototype.GetDiscountList = function (prettyDiscounts) {
     });
     return discountString;
 };
+
+Formatter.prototype.GetPromotionList = function (prettyPromotions) {
+    var promotionString = '';
+    _.forEach(prettyPromotions, function (prettyPromotion) {
+        promotionString += '名称：';
+        var desc = prettyPromotion.scope.GetDescription();
+        promotionString += desc + '满' + prettyPromotion.from + '减' + prettyPromotion.to;
+        promotionString += '，金额：' + prettyPromotion.reduction.toFixed(2) + '元\n';
+    });
+    return promotionString;
+};
