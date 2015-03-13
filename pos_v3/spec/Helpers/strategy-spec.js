@@ -252,7 +252,9 @@ describe('Strategy: ', function () {
                 Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetDiscount(enhancedItems, enhancedBenefits);
+            for(var j in enhancedItems){
+                Strategy.GetDiscount(enhancedItems[j], enhancedBenefits);
+            }
             expect(enhancedBenefits.length).toEqual(1);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(3);
         });
@@ -266,7 +268,9 @@ describe('Strategy: ', function () {
                 Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetDiscount(enhancedItems, enhancedBenefits);
+            for(var j in enhancedItems){
+                Strategy.GetDiscount(enhancedItems[j], enhancedBenefits);
+            }
             expect(enhancedBenefits.length).toEqual(2);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(7);
             expect(enhancedBenefits[1].reduction).toBeCloseTo(13.5);
@@ -281,7 +285,9 @@ describe('Strategy: ', function () {
                 Strategy.EnsureDiscount(discounts[i], {3: 3}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetDiscount(enhancedItems, enhancedBenefits);
+            for(var j in enhancedItems){
+                Strategy.GetDiscount(enhancedItems[j], enhancedBenefits);
+            }
             expect(enhancedBenefits.length).toEqual(2);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(6);
             expect(enhancedBenefits[1].reduction).toBeCloseTo(7);
@@ -317,7 +323,9 @@ describe('Strategy: ', function () {
                 Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetPromotion(enhancedItems, enhancedBenefits);
+            for(var j in enhancedItems){
+                Strategy.GetPromotion(enhancedItems[j], enhancedBenefits);
+            }
             expect(enhancedBenefits.length).toEqual(1);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(0);
         });
@@ -331,7 +339,9 @@ describe('Strategy: ', function () {
                 Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetPromotion(enhancedItems, enhancedBenefits);
+            for(var j in enhancedItems){
+                Strategy.GetPromotion(enhancedItems[j], enhancedBenefits);
+            }
             expect(enhancedBenefits.length).toEqual(2);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(2);
             expect(enhancedBenefits[1].reduction).toBeCloseTo(2);
@@ -346,7 +356,9 @@ describe('Strategy: ', function () {
                 Strategy.EnsurePromotion(promotions[i], {}, enhancedItems);
             }
             var enhancedBenefits = [];
-            Strategy.GetPromotion(enhancedItems, enhancedBenefits);
+            for(var j in enhancedItems){
+                Strategy.GetPromotion(enhancedItems[j], enhancedBenefits);
+            }
             expect(enhancedBenefits.length).toEqual(2);
             expect(enhancedBenefits[0].reduction).toBeCloseTo(0);
             expect(enhancedBenefits[1].reduction).toBeCloseTo(2);
