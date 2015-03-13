@@ -17,12 +17,6 @@ describe('Discount: ', function () {
         expect(discount.scope).toEqual(scope);
     });
 
-    it('should be able to get the correct price of item', function () {
-        expect(discount.getPrice(item)).toEqual(1.50);
-        spyOn(discount.scope, 'isInRange').and.returnValue(false);
-        expect(discount.getPrice(item)).toEqual(3.00);
-    });
-
     it('should throw error if the rate is incorrect.', function () {
         var fun1 = function () {
             return new Discount(-1, scope);

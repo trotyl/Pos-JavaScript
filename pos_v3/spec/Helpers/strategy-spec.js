@@ -20,10 +20,9 @@ describe('Strategy: ', function () {
     });
 
     it('should be able to constructed correctly.', function () {
-        strategy = new Strategy(allItems, [], [], {0: 0});
+        strategy = new Strategy(allItems, [], {0: 0});
         expect(strategy.allItems).toEqual(allItems);
-        expect(strategy.discounts.length).toEqual(0);
-        expect(strategy.promotions.length).toEqual(0);
+        expect(strategy.benefits.length).toEqual(0);
         expect(strategy.discountMutual[0]).toEqual(0);
     });
 

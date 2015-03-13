@@ -1,22 +1,11 @@
 function Discount(rate, scope, keep) {
-    Discount.ValidateRate(rate);
+    Discount.Validate(rate);
     this.rate = rate;
     this.scope = scope;
     this.keep = keep;
 }
 
-Discount.prototype.getPrice = function (item) {
-    var price = null;
-    if (this.scope.isInRange(item)) {
-        price = item.price * this.rate;
-    }
-    else {
-        price = item.price;
-    }
-    return price;
-};
-
-Discount.ValidateRate = function (rate) {
+Discount.Validate = function (rate) {
     if(rate < 0 || rate > 1){
         throw new RangeError("The rate of rate is out of range(0, 1)! It's " + rate);
     }
