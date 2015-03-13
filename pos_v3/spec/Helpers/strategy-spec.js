@@ -264,4 +264,57 @@ describe('Strategy: ', function () {
             expect(enhancedDiscounts.length).toEqual(2);
         });
     });
+
+    describe('should be able to get the right promotion list', function () {
+        var scope0 = new SingleScope('雪碧');
+        var scope1 = new SingleScope('可口可乐350ml');
+        var scope2 = new BrandScope('康师傅');
+        var scope3 = new BrandScope('可口可乐');
+
+        var input = [
+            { 'ITEM000000' : 20 },
+            { 'ITEM000010' : 20 },
+            { 'ITEM000005' : 30 },
+            { 'ITEM000003' : 12 }
+        ];
+        var strategy;
+        var enhancedItems;
+
+        beforeEach(function () {
+            strategy = new Strategy(allItems, [], [], {0: 0});
+            enhancedItems = strategy.GetEnhancedItems(input);
+        });
+
+        it('should work with only SingleScope.', function () {
+            promotions = [
+                new Promotion(100, 5, scope0, true),
+                new Promotion(100, 5, scope1, true),
+            ];
+            Strategy.EnsurePromotions(promotions, {}, enhancedItems);
+            var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
+            expect(enhancedPromotions.length).toEqual(1);
+
+        });
+
+        it('should work with only BrandScope.', function () {
+            promotions = [
+                new Promotion(100, 2, scope2, true),
+                new Promotion(100, 2, scope3, true),
+            ];
+            Strategy.EnsurePromotions(promotions, {}, enhancedItems);
+            var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
+            expect(enhancedPromotions.length).toEqual(2);
+
+        });
+
+        it('should work with both SingleScope and BrandScope.', function () {
+            promotions = [
+                new Promotion(100, 5, scope1, true),
+                new Promotion(100, 2, scope3, true),
+            ];
+            Strategy.EnsurePromotions(promotions, {3: 3}, enhancedItems);
+            var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
+            expect(enhancedPromotions.length).toEqual(2);
+        });
+    });
 });
