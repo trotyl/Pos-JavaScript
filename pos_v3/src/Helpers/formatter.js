@@ -27,7 +27,7 @@ Formatter.GetChineseNumber = function (number) {
 };
 
 
-Formatter.prototype.format = function (prettyItems, prettyDiscounts, prettyPromotions, prettyInfo) {
+Formatter.prototype.format = function (prettyItems, prettyBenefits, prettyInfo) {
     var res = '';
     res += '***<没钱赚商店>购物清单***\n';
     res += '打印时间：' + this.GetDateTime() + '\n';
@@ -35,8 +35,7 @@ Formatter.prototype.format = function (prettyItems, prettyDiscounts, prettyPromo
     res += this.GetItemList(prettyItems);
     res += this.GetSplitter();
     res += '优惠信息：\n';
-    res += this.GetDiscountList(prettyDiscounts);
-    res += this.GetPromotionList(prettyPromotions);
+    res += this.GetBenefitList(prettyBenefits);
     res += this.GetSplitter();
     res += this.GetSummary(prettyInfo);
     res += '**********************\n';
@@ -64,26 +63,22 @@ Formatter.prototype.GetItemList = function (prettyItems) {
     return itemString;
 };
 
-Formatter.prototype.GetDiscountList = function (prettyDiscounts) {
-    var discountString = '';
-    _.forEach(prettyDiscounts, function (prettyDiscount) {
-        discountString += '名称：';
-        var desc = prettyDiscount.scope.GetDescription();
-        discountString += (desc ? desc + '打折' : (Formatter.GetChineseNumber(prettyDiscount.discount) + '折'));
-        discountString += '，金额：' + prettyDiscount.reduction.toFixed(2) + '元\n';
+Formatter.prototype.GetBenefitList = function (prettyBenefits) {
+    var benefitString = '';
+    _.forEach(prettyBenefits, function (prettyBenefit) {
+        benefitString += '名称：';
+        var desc;
+        if(prettyBenefit.type == Benefit.types.discount){
+            desc = prettyBenefit.scope.GetDescription();
+            benefitString += (desc ? desc + '打折' : (Formatter.GetChineseNumber(prettyBenefit.discount) + '折'));
+        }
+        else if(prettyBenefit.type == Benefit.types.promotion){
+            desc = prettyBenefit.scope.GetSimpleDescription();
+            benefitString += (desc + '满' + prettyBenefit.from + '减' + prettyBenefit.to);
+        }
+        benefitString += '，金额：' + prettyBenefit.reduction.toFixed(2) + '元\n';
     });
-    return discountString;
-};
-
-Formatter.prototype.GetPromotionList = function (prettyPromotions) {
-    var promotionString = '';
-    _.forEach(prettyPromotions, function (prettyPromotion) {
-        promotionString += '名称：';
-        var desc = prettyPromotion.scope.GetSimpleDescription();
-        promotionString += desc + '满' + prettyPromotion.from + '减' + prettyPromotion.to;
-        promotionString += '，金额：' + prettyPromotion.reduction.toFixed(2) + '元\n';
-    });
-    return promotionString;
+    return benefitString;
 };
 
 Formatter.prototype.GetSummary = function (prettyInfo) {

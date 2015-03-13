@@ -1,6 +1,6 @@
 describe('Formatter: ', function () {
 
-    var prettyItems, prettyDiscounts, prettyPromotions, prettyInfo;
+    var prettyItems, prettyBenefits, prettyInfo;
     var formatter;
 
     beforeEach(function () {
@@ -11,16 +11,13 @@ describe('Formatter: ', function () {
             {'item': new Item('ITEM000003', '水果', '云山', '云山荔枝', '斤', 15.00), 'amount': 12}
         ];
 
-        prettyDiscounts = [
-            {'scope': new BrandScope('可口可乐'), 'discount': 9, 'reduction': 14.00},
-            {'scope': new SingleScope('可口可乐350ml'), 'discount': 9, 'reduction': 3.00},
-            {'scope': new FullScope([]), 'discount': 9, 'reduction': 48.90}
-        ];
-
-        prettyPromotions = [
-            {'scope': new BrandScope('康师傅'), 'from': 100, 'to': 2, 'reduction': 4.00},
-            {'scope': new SingleScope('云山荔枝'), 'from': 100, 'to': 5, 'reduction': 5.00},
-            {'scope': new FullScope([]), 'from': 100, 'to': 3, 'reduction': 3.00}
+        prettyBenefits = [
+            {'type': Benefit.types.discount, 'scope': new BrandScope('可口可乐'), 'discount': 0.9, 'reduction': 14.00},
+            {'type': Benefit.types.discount, 'scope': new SingleScope('可口可乐350ml'), 'discount': 0.9, 'reduction': 3.00},
+            {'type': Benefit.types.discount, 'scope': new FullScope([]), 'discount': 0.9, 'reduction': 48.90},
+            {'type': Benefit.types.promotion, 'scope': new BrandScope('康师傅'), 'from': 100, 'to': 2, 'reduction': 4.00},
+            {'type': Benefit.types.promotion, 'scope': new SingleScope('云山荔枝'), 'from': 100, 'to': 5, 'reduction': 5.00},
+            {'type': Benefit.types.promotion, 'scope': new FullScope([]), 'from': 100, 'to': 3, 'reduction': 3.00}
         ];
 
         prettyInfo = {
@@ -46,16 +43,10 @@ describe('Formatter: ', function () {
     });
 
     it('should be able to generate the correct discount list.', function () {
-        expect(formatter.GetDiscountList(prettyDiscounts)).toEqual(
+        expect(formatter.GetBenefitList(prettyBenefits)).toEqual(
             '名称：可口可乐品牌打折，金额：14.00元\n' +
             '名称：可口可乐350ml单品打折，金额：3.00元\n' +
-            '名称：九折，金额：48.90元\n'
-        );
-    });
-
-
-    it('should be able to generate the correct promotion list.', function () {
-        expect(formatter.GetPromotionList(prettyPromotions)).toEqual(
+            '名称：九折，金额：48.90元\n' +
             '名称：康师傅品牌满100减2，金额：4.00元\n' +
             '名称：云山荔枝满100减5，金额：5.00元\n' +
             '名称：满100减3，金额：3.00元\n'
