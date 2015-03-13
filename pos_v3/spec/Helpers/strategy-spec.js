@@ -62,7 +62,7 @@ describe('Strategy: ', function () {
             enhancedItems = strategy.GetEnhancedItems(input);
         });
 
-        it('should work with only SingleScope and keeping price.', function () {
+        it('should work with only SingleScope.', function () {
             discounts = [
                 new Discount(0.9, scope0, true),
                 new Discount(0.95, scope1, true),
@@ -83,7 +83,7 @@ describe('Strategy: ', function () {
             expect(enhancedItems[3].discounts[2]).toBeFalsy();
         });
 
-        it('should work with only BrandScope and keeping price.', function () {
+        it('should work with only BrandScope.', function () {
             discounts = [
                 new Discount(0.9, scope2, true),
                 new Discount(0.95, scope3, true),
@@ -104,7 +104,7 @@ describe('Strategy: ', function () {
             expect(enhancedItems[3].discounts[2]).toBeFalsy();
         });
 
-        it('should work with both SingleScope and BrandScope and keeping price.', function () {
+        it('should work with both SingleScope and BrandScope.', function () {
             discounts = [
                 new Discount(0.9, scope1, true),
                 new Discount(0.95, scope3, true),
@@ -124,7 +124,91 @@ describe('Strategy: ', function () {
             expect(enhancedItems[3].discounts[1]).toBeFalsy();
             expect(enhancedItems[3].discounts[2]).toBeFalsy();
         });
+
     });
 
+    describe('should be able to ensure the right valid promotions.', function () {
 
+        var scope0 = new SingleScope('雪碧');
+        var scope1 = new SingleScope('可口可乐350ml');
+        var scope2 = new BrandScope('康师傅');
+        var scope3 = new BrandScope('可口可乐');
+
+        var input = [
+            { 'ITEM000000' : 20 },
+            { 'ITEM000010' : 20 },
+            { 'ITEM000005' : 30 },
+            { 'ITEM000003' : 12 }
+        ];
+        var strategy;
+        var enhancedItems;
+
+        beforeEach(function () {
+            strategy = new Strategy(allItems, [], [], {0: 0});
+            enhancedItems = strategy.GetEnhancedItems(input);
+        });
+
+        it('should work with only SingleScope.', function () {
+            promotions = [
+                new Promotion(100, 5, scope0, true),
+                new Promotion(100, 5, scope1, true),
+            ];
+            Strategy.EnsurePromotions(promotions, {}, enhancedItems);
+            expect(enhancedItems.length).toEqual(4);
+            expect(enhancedItems[0].price).toEqual(3.00);
+            expect(enhancedItems[0].promotions[1]).toBeTruthy();
+            expect(enhancedItems[0].promotions[2]).toBeFalsy();
+
+            expect(enhancedItems[1].promotions[1]).toBeFalsy();
+            expect(enhancedItems[1].promotions[2]).toBeFalsy();
+
+            expect(enhancedItems[2].promotions[1]).toBeFalsy();
+            expect(enhancedItems[2].promotions[2]).toBeFalsy();
+
+            expect(enhancedItems[3].promotions[1]).toBeFalsy();
+            expect(enhancedItems[3].promotions[2]).toBeFalsy();
+        });
+
+        it('should work with only BrandScope.', function () {
+            promotions = [
+                new Promotion(100, 2, scope2, true),
+                new Promotion(100, 2, scope3, true),
+            ];
+            Strategy.EnsurePromotions(promotions, {}, enhancedItems);
+            expect(enhancedItems.length).toEqual(4);
+            expect(enhancedItems[0].price).toEqual(3.00);
+            expect(enhancedItems[0].promotions[1]).toBeFalsy();
+            expect(enhancedItems[0].promotions[2]).toBeTruthy();
+
+            expect(enhancedItems[1].promotions[1]).toBeFalsy();
+            expect(enhancedItems[1].promotions[2]).toBeTruthy();
+
+            expect(enhancedItems[2].promotions[1]).toBeFalsy();
+            expect(enhancedItems[2].promotions[2]).toBeTruthy();
+
+            expect(enhancedItems[3].promotions[1]).toBeFalsy();
+            expect(enhancedItems[3].promotions[2]).toBeFalsy();
+        });
+
+        it('should work with both SingleScope and BrandScope.', function () {
+            promotions = [
+                new Promotion(100, 5, scope1, true),
+                new Promotion(100, 2, scope3, true),
+            ];
+            Strategy.EnsurePromotions(promotions, {3: 3}, enhancedItems);
+            expect(enhancedItems.length).toEqual(4);
+            expect(enhancedItems[0].price).toEqual(3.00);
+            expect(enhancedItems[0].promotions[1]).toBeTruthy();
+            expect(enhancedItems[0].promotions[2]).toBeTruthy();
+
+            expect(enhancedItems[1].promotions[1]).toBeFalsy();
+            expect(enhancedItems[1].promotions[2]).toBeTruthy();
+
+            expect(enhancedItems[2].promotions[1]).toBeFalsy();
+            expect(enhancedItems[2].promotions[2]).toBeFalsy();
+
+            expect(enhancedItems[3].promotions[1]).toBeFalsy();
+            expect(enhancedItems[3].promotions[2]).toBeFalsy();
+        });
+    });
 });

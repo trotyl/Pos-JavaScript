@@ -83,7 +83,7 @@ Strategy.GetDiscounts = function (enhancedItems) {
             if (enhancedItem.discount & val != 0) {
                 var discount = enhancedItem.discounts[val];
                 var label = discount.scope.GetLabel();
-                var enhancedDiscount = _.where(enhancedDiscounts, {'label': label});
+                var enhancedDiscount = _.findWhere(enhancedDiscounts, {'label': label});
                 var tmpPrice = enhancedItem.price * (1 - discount.rate);
                 if(enhancedDiscount){
                     enhancedDiscount.price += tmpPrice * enhancedItem.amount;
@@ -110,7 +110,7 @@ Strategy.GetPromotions = function (enhancedItems) {
             if (enhancedItem.promotion & val != 0) {
                 var promotion = enhancedItem.promotions[val];
                 var label = promotion.scope.GetLabel();
-                var enhancedPromotion = _.where(enhancedPromotions, {'label': label});
+                var enhancedPromotion = _.findWhere(enhancedPromotions, {'label': label});
                 if(enhancedPromotion){
                     enhancedPromotion.total += enhancedItem.item.price * enhancedItem.amount;
                 }
