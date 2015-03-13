@@ -20,7 +20,7 @@ Strategy.prototype.GetEnhancedItems = function (input) {
     _.forEach(input, function (fakeItem) {
         for (var barcode in fakeItem) {
             var item = _.findWhere(this.allItems, {'barcode': barcode});
-            enhancedItems.push({
+            item && enhancedItems.push({
                 'item': item,
                 'price': item.price,
                 'amount': fakeItem[barcode],
@@ -40,24 +40,26 @@ Strategy.EnsureDiscounts = function (discounts, mutual, enhancedItems) {
             if (!discount.scope.isInRange(enhancedItem.item)) {
                 return;
             }
+
             var oldOne = enhancedItem.discount;
             var newOne = discount.scope.type;
-            if (oldOne & newOne != 0) {
+            if ((oldOne & newOne) != 0) {
                 return;
             }
             if (enhancedItem.discount == 0) {
                 enhancedItem.discount = newOne;
                 enhancedItem.discounts[newOne] = discount;
             }
-            else if(mutual[oldOne | newOne] & newOne == newOne){
+            else if((mutual[oldOne | newOne] & newOne) == newOne){
                 enhancedItem.discount = mutual[oldOne | newOne];
                 enhancedItem.discounts[newOne] = discount;
                 _.forEach(enhancedItem.discounts, function (val, key) {
-                    if(key & enhancedItem.discount == 0){
+                    if((key & enhancedItem.discount) == 0){
                         delete enhancedItem.discounts[key];
                     }
-                }, this)
+                }, this);
             }
+
         }, this);
     }, this);
 };
@@ -74,7 +76,7 @@ Strategy.EnsurePromotions = function (promotions, mutual, enhancedItems) {
     }, this);
 };
 
-Strategy.GetDiscounts = function (enhancedItems, keepOriginal) {
+Strategy.GetDiscounts = function (enhancedItems) {
     var enhancedDiscounts = [];
     _.forEach(enhancedItems, function (enhancedItem) {
         _.forEach(Scope.types, function (val, key) {
@@ -85,7 +87,7 @@ Strategy.GetDiscounts = function (enhancedItems, keepOriginal) {
                 var tmpPrice = enhancedItem.price * (1 - discount.rate);
                 if(enhancedDiscount){
                     enhancedDiscount.price += tmpPrice * enhancedItem.amount;
-                    enhancedItem.price = keepOriginal? enhancedItem.price: tmpPrice;
+                    enhancedItem.price = enhancedDiscount.discount.keep? enhancedItem.price: tmpPrice;
                 }
                 else {
                     enhancedDiscount.push({

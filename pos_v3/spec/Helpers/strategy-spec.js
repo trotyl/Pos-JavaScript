@@ -27,7 +27,7 @@ describe('Strategy: ', function () {
         expect(strategy.discountMutual[0]).toEqual(0);
     });
 
-    it('should be able to generate the enhanced items', function () {
+    it('should be able to generate the enhanced items.', function () {
         var input = [
             { 'ITEM000000' : 20 },
             { 'ITEM000010' : 20 },
@@ -41,59 +41,90 @@ describe('Strategy: ', function () {
         expect(enhancedItems[0].price).toEqual(3.00);
     });
 
-    xdescribe('First Strategy ', function () {
-        var input;
-        var firstStrategy;
+    describe('should be able to ensure the right valid discounts.', function () {
+
+        var scope0 = new SingleScope('雪碧');
+        var scope1 = new SingleScope('可口可乐350ml');
+        var scope2 = new BrandScope('康师傅');
+        var scope3 = new BrandScope('可口可乐');
+
+        var input = [
+            { 'ITEM000000' : 20 },
+            { 'ITEM000010' : 20 },
+            { 'ITEM000005' : 30 },
+            { 'ITEM000003' : 12 }
+        ];
+        var strategy;
+        var enhancedItems;
 
         beforeEach(function () {
-
-            firstStrategy = (new FirstStrategyFactory()).GetStrategy();
+            strategy = new Strategy(allItems, [], [], {0: 0});
+            enhancedItems = strategy.GetEnhancedItems(input);
         });
 
+        it('should work with only SingleScope and keeping price.', function () {
+            discounts = [
+                new Discount(0.9, scope0, true),
+                new Discount(0.95, scope1, true),
+            ];
+            Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
+            expect(enhancedItems.length).toEqual(4);
+            expect(enhancedItems[0].price).toEqual(3.00);
+            expect(enhancedItems[0].discounts[1]).toBeTruthy();
+            expect(enhancedItems[0].discounts[2]).toBeFalsy();
 
+            expect(enhancedItems[1].discounts[1]).toBeFalsy();
+            expect(enhancedItems[1].discounts[2]).toBeFalsy();
 
+            expect(enhancedItems[2].discounts[1]).toBeFalsy();
+            expect(enhancedItems[2].discounts[2]).toBeFalsy();
+
+            expect(enhancedItems[3].discounts[1]).toBeFalsy();
+            expect(enhancedItems[3].discounts[2]).toBeFalsy();
+        });
+
+        it('should work with only BrandScope and keeping price.', function () {
+            discounts = [
+                new Discount(0.9, scope2, true),
+                new Discount(0.95, scope3, true),
+            ];
+            Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
+            expect(enhancedItems.length).toEqual(4);
+            expect(enhancedItems[0].price).toEqual(3.00);
+            expect(enhancedItems[0].discounts[1]).toBeFalsy();
+            expect(enhancedItems[0].discounts[2]).toBeTruthy();
+
+            expect(enhancedItems[1].discounts[1]).toBeFalsy();
+            expect(enhancedItems[1].discounts[2]).toBeTruthy();
+
+            expect(enhancedItems[2].discounts[1]).toBeFalsy();
+            expect(enhancedItems[2].discounts[2]).toBeTruthy();
+
+            expect(enhancedItems[3].discounts[1]).toBeFalsy();
+            expect(enhancedItems[3].discounts[2]).toBeFalsy();
+        });
+
+        it('should work with both SingleScope and BrandScope and keeping price.', function () {
+            discounts = [
+                new Discount(0.9, scope1, true),
+                new Discount(0.95, scope3, true),
+            ];
+            Strategy.EnsureDiscounts(discounts, {3: 3}, enhancedItems);
+            expect(enhancedItems.length).toEqual(4);
+            expect(enhancedItems[0].price).toEqual(3.00);
+            expect(enhancedItems[0].discounts[1]).toBeTruthy();
+            expect(enhancedItems[0].discounts[2]).toBeTruthy();
+
+            expect(enhancedItems[1].discounts[1]).toBeFalsy();
+            expect(enhancedItems[1].discounts[2]).toBeTruthy();
+
+            expect(enhancedItems[2].discounts[1]).toBeFalsy();
+            expect(enhancedItems[2].discounts[2]).toBeFalsy();
+
+            expect(enhancedItems[3].discounts[1]).toBeFalsy();
+            expect(enhancedItems[3].discounts[2]).toBeFalsy();
+        });
     });
 
 
-    xdescribe('BrandScope ', function () {
-        var scope;
-
-        beforeEach(function () {
-            scope = new BrandScope('可口可乐');
-        });
-
-        it('should be able to constructed correctly.', function () {
-            expect(scope.type).toEqual(Scope.types.brand);
-            expect(scope.brand).toEqual('可口可乐');
-        });
-
-        it('should be able to check if a item is in discount.', function () {
-            expect(scope.isInRange(item0)).toBeTruthy();
-            expect(scope.isInRange(item1)).toBeTruthy();
-            expect(scope.isInRange(item2)).toBeFalsy();
-        });
-
-    });
-
-
-    xdescribe('FullScope ', function () {
-        var scope;
-
-        beforeEach(function () {
-            var exceptions = [new BrandScope('可口可乐')];
-            scope = new FullScope(exceptions);
-        });
-
-        it('should be able to constructed correctly.', function () {
-            expect(scope.type).toEqual(Scope.types.full);
-            expect(scope.exceptions.length).toEqual(1);
-        });
-
-        it('should be able to check if a item is in scope.', function () {
-            expect(scope.isInRange(item0)).toBeFalsy();
-            expect(scope.isInRange(item1)).toBeFalsy();
-            expect(scope.isInRange(item2)).toBeTruthy();
-        });
-
-    });
 });
