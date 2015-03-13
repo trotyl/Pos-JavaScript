@@ -1,7 +1,8 @@
-function Discount(rate, scope) {
+function Discount(rate, scope, keep) {
     Discount.ValidateRate(rate);
     this.rate = rate;
     this.scope = scope;
+    this.keep = keep;
 }
 
 Discount.prototype.getPrice = function (item) {

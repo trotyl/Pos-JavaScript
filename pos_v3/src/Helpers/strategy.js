@@ -116,7 +116,7 @@ Strategy.GetPromotions = function (enhancedItems) {
                     enhancedPromotions.push({
                         'label': label,
                         'from': promotion.from,
-                        'reduction': promotion.reduction,
+                        'reduction': promotion.to,
                         'scope': promotion.scope,
                         'total': enhancedItem.item.price * enhancedItem.amount
                     })

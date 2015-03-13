@@ -14,7 +14,7 @@ describe('Promotion: ', function () {
 
     it('should be able to constructed correctly.', function () {
         expect(promotion.from).toEqual(100);
-        expect(promotion.reduction).toEqual(2);
+        expect(promotion.to).toEqual(2);
         expect(promotion.scope).toEqual(scope);
     });
 

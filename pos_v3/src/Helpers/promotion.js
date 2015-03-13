@@ -1,8 +1,9 @@
-function Promotion(from, reduction, scope) {
-    Discount.ValidateParams(from, reduction);
+function Promotion(from, to, scope, keep) {
+    Discount.ValidateParams(from, to);
     this.from = from;
-    this.reduction = reduction;
+    this.to = to;
     this.scope = scope;
+    this.keep = keep;
 }
 
 Discount.ValidateParams = function (from, reduction) {
