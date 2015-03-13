@@ -8,6 +8,7 @@ function Strategy(allItems, discounts, promotions, discountMutual) {
 Strategy.prototype.GenerageResult = function (input, formatter, output) {
     var enhancedItems = this.GetEnhancedItems(input);
     Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
+    Strategy.EnsurePromotions(this.promotions, {}, enhancedItems);
     var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
     var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
     var prettyItems = Strategy.PrettifyItems(enhancedItems);

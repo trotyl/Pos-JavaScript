@@ -12,8 +12,8 @@ FirstStrategyFactory.prototype.GetStrategy = function () {
     return new Strategy(
         loadAllItems(),
         [
-            new Discount(0.9, scope0),
-            new Discount(0.95, scope1)
+            new Discount(0.9, scope0, true),
+            new Discount(0.95, scope1, true)
         ],
         [
             new FullPromotionFactory().GetPromotion([scope0, scope1, scope2])
@@ -32,8 +32,8 @@ SecondStrategyFactory.prototype.GetStrategy = function () {
     return new Strategy(
         loadAllItems(),
         [
-            new Discount(0.9, scope0),
-            new Discount(0.95, scope1)
+            new Discount(0.9, scope0, true),
+            new Discount(0.95, scope1, true)
         ],
         [
             new SinglePromotionFactory().GetPromotion('云山荔枝'),
@@ -55,8 +55,8 @@ ThirdStrategyFactory.prototype.GetStrategy = function () {
     return new Strategy(
         loadAllItems(),
         [
-            new Discount(0.95, scope1),
-            new Discount(0.9, scope0)
+            new Discount(0.95, scope1, true),
+            new Discount(0.9, scope0, true)
         ],
         [
             new BrandPromotionFactory().GetPromotion('康师傅'),
@@ -77,8 +77,8 @@ FourthStrategyFactory.prototype.GetStrategy = function () {
     return new Strategy(
         loadAllItems(),
         [
-            new Discount(0.95, scope1),
-            new Discount(0.9, scope0)
+            new Discount(0.95, scope1, true),
+            new Discount(0.9, scope0, true)
         ],
         [
             new SinglePromotionFactory().GetPromotion('果粒橙'),
@@ -86,7 +86,7 @@ FourthStrategyFactory.prototype.GetStrategy = function () {
             new FullPromotionFactory().GetPromotion([scope2])
         ],
         {
-            3: 3
+            0x03: 0x03
         },
         true
     )
