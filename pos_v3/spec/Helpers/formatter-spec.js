@@ -18,7 +18,9 @@ describe('Formatter: ', function () {
         ];
 
         prettyPromotions = [
-            {'scope': new FullScope([]), 'reduction': 3.00}
+            {'scope': new BrandScope('康师傅'), 'from': 100, 'to': 2, 'reduction': 4.00},
+            {'scope': new SingleScope('云山荔枝'), 'from': 100, 'to': 5, 'reduction': 5.00},
+            {'scope': new FullScope([]), 'from': 100, 'to': 3, 'reduction': 3.00}
         ];
 
         formatter = new Formatter();
@@ -43,6 +45,15 @@ describe('Formatter: ', function () {
             '名称：可口可乐品牌打折，金额：14.00元\n' +
             '名称：可口可乐350ml单品打折，金额：3.00元\n' +
             '名称：九折，金额：48.90元\n'
+        );
+    });
+
+
+    it('should be able to generate the correct promotion list.', function () {
+        expect(formatter.GetPromotionList(prettyPromotions)).toEqual(
+            '名称：康师傅品牌满100减2，金额：4.00元\n' +
+            '名称：云山荔枝满100减5，金额：5.00元\n' +
+            '名称：满100减3，金额：3.00元\n'
         );
     });
 });

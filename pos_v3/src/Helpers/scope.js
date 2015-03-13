@@ -28,6 +28,10 @@ SingleScope.prototype.GetDescription = function () {
     return this.name + '单品';
 };
 
+SingleScope.prototype.GetSimpleDescription = function () {
+    return this.name;
+};
+
 
 // 品牌范围
 function BrandScope(brand_name) {
@@ -44,6 +48,10 @@ BrandScope.prototype.GetLabel = function () {
 };
 
 BrandScope.prototype.GetDescription = function () {
+    return this.brand + '品牌';
+};
+
+BrandScope.prototype.GetSimpleDescription = function () {
     return this.brand + '品牌';
 };
 
@@ -70,5 +78,9 @@ FullScope.prototype.GetLabel = function () {
 };
 
 FullScope.prototype.GetDescription = function () {
+    return '';
+};
+
+FullScope.prototype.GetSimpleDescription = function () {
     return '';
 };
