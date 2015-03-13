@@ -50,11 +50,11 @@ Strategy.EnsureDiscounts = function (discounts, mutual, enhancedItems) {
                 enhancedItem.discount = newOne;
                 enhancedItem.discounts[newOne] = discount;
             }
-            else if((mutual[oldOne | newOne] & newOne) == newOne){
+            else if ((mutual[oldOne | newOne] & newOne) == newOne) {
                 enhancedItem.discount = mutual[oldOne | newOne];
                 enhancedItem.discounts[newOne] = discount;
                 _.forEach(enhancedItem.discounts, function (val, key) {
-                    if((key & enhancedItem.discount) == 0){
+                    if ((key & enhancedItem.discount) == 0) {
                         delete enhancedItem.discounts[key];
                     }
                 }, this);
@@ -85,9 +85,9 @@ Strategy.GetDiscounts = function (enhancedItems) {
                 var label = discount.scope.GetLabel();
                 var enhancedDiscount = _.findWhere(enhancedDiscounts, {'label': label});
                 var tmpPrice = enhancedItem.price * (1 - discount.rate);
-                if(enhancedDiscount){
-                    enhancedDiscount.price += tmpPrice * enhancedItem.amount;
-                    enhancedItem.price = enhancedDiscount.keep? enhancedItem.price: tmpPrice;
+                if (enhancedDiscount) {
+                    enhancedDiscount.reduction += tmpPrice * enhancedItem.amount;
+                    enhancedItem.price = enhancedDiscount.keep ? enhancedItem.price : tmpPrice;
                 }
                 else {
                     enhancedDiscounts.push({
@@ -95,11 +95,14 @@ Strategy.GetDiscounts = function (enhancedItems) {
                         'keep': discount.keep,
                         'rate': discount.rate,
                         'scope': discount.scope,
-                        'price': tmpPrice * enhancedItem.amount
+                        'reduction': tmpPrice * enhancedItem.amount
                     })
                 }
             }
         })
+    });
+    _.forEach(enhancedDiscounts, function (enhancedDiscount) {
+        enhancedDiscount.reduction = enhancedDiscount.reduction.toFixed(2);
     });
     return enhancedDiscounts;
 };
@@ -112,20 +115,27 @@ Strategy.GetPromotions = function (enhancedItems) {
                 var promotion = enhancedItem.promotions[val];
                 var label = promotion.scope.GetLabel();
                 var enhancedPromotion = _.findWhere(enhancedPromotions, {'label': label});
-                if(enhancedPromotion){
-                    enhancedPromotion.total += enhancedItem.item.price * enhancedItem.amount;
+                var tmpPrice = enhancedItem.price * enhancedItem.amount;
+                if (enhancedPromotion) {
+                    enhancedPromotion.total += tmpPrice;
+                    enhancedPromotion.reduction = tmpPrice > promotion.from ? parseInt(tmpPrice / promotion.from) * promotion.to : 0;
                 }
                 else {
                     enhancedPromotions.push({
                         'label': label,
+                        'keep': promotion.keep,
                         'from': promotion.from,
-                        'reduction': promotion.to,
+                        'to': promotion.to,
                         'scope': promotion.scope,
-                        'total': enhancedItem.item.price * enhancedItem.amount
+                        'total': tmpPrice,
+                        'reduction': tmpPrice > promotion.from ? parseInt(tmpPrice / promotion.from) * promotion.to : 0
                     })
                 }
             }
         })
+    });
+    _.forEach(enhancedPromotions, function (enhancedPromotion) {
+        enhancedPromotion.reduction = enhancedPromotion.reduction.toFixed(2);
     });
     return enhancedPromotions;
 };

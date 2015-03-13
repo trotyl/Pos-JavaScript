@@ -240,7 +240,7 @@ describe('Strategy: ', function () {
             Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
             var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
             expect(enhancedDiscounts.length).toEqual(1);
-
+            expect(enhancedDiscounts[0].reduction).toBeCloseTo(3);
         });
 
         it('should work with only BrandScope.', function () {
@@ -251,7 +251,8 @@ describe('Strategy: ', function () {
             Strategy.EnsureDiscounts(discounts, {}, enhancedItems);
             var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
             expect(enhancedDiscounts.length).toEqual(2);
-
+            expect(enhancedDiscounts[0].reduction).toBeCloseTo(7);
+            expect(enhancedDiscounts[1].reduction).toBeCloseTo(13.5);
         });
 
         it('should work with both SingleScope and BrandScope.', function () {
@@ -262,6 +263,8 @@ describe('Strategy: ', function () {
             Strategy.EnsureDiscounts(discounts, {3: 3}, enhancedItems);
             var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
             expect(enhancedDiscounts.length).toEqual(2);
+            expect(enhancedDiscounts[0].reduction).toBeCloseTo(6);
+            expect(enhancedDiscounts[1].reduction).toBeCloseTo(7);
         });
     });
 
