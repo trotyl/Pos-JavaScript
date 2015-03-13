@@ -10,8 +10,12 @@ Strategy.prototype.GenerageResult = function (input, formatter, output) {
     Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
     var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
     var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
+    var prettyItems = Strategy.PrettifyItems(enhancedItems);
+    var prettyDiscounts = Strategy.PrettifyDiscounts(enhancedDiscounts);
+    var prettyPromotions = Strategy.PrettifyPromotions(enhancedPromotions);
+    var prettifySummary = Strategy.PrettifySummary(prettyItems, prettyDiscounts, prettyPromotions);
 
-    var result = formatter.format(enhancedItems, enhancedDiscounts, enhancedPromotions);
+    var result = formatter.format(prettyItems, prettyDiscounts, prettyPromotions, prettifySummary);
     output.log(result);
 };
 
@@ -170,11 +174,11 @@ Strategy.PrettifyPromotions = function (enhancedPromotions) {
     return prettyPromotions;
 };
 
-Strategy.PrettifySummary = function (PrettyItems, prettyDiscounts, prettyPromotions) {
+Strategy.PrettifySummary = function (prettyItems, prettyDiscounts, prettyPromotions) {
     var sum = 0;
     var reduction = 0;
-    for(var i in PrettyItems){
-        sum += PrettyItems[i].item.price * PrettyItems[i].amount;
+    for(var i in prettyItems){
+        sum += prettyItems[i].item.price * prettyItems[i].amount;
     }
     for(var j in prettyDiscounts){
         reduction += prettyDiscounts[j].reduction;
