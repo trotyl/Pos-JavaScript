@@ -165,12 +165,14 @@ Strategy.PrettifyDiscounts = function (enhancedDiscounts) {
 Strategy.PrettifyPromotions = function (enhancedPromotions) {
     var prettyPromotions = [];
     for (var i in enhancedPromotions) {
-        prettyPromotions.push({
-            'scope': enhancedPromotions[i].scope,
-            'from': enhancedPromotions[i].from,
-            'to': enhancedPromotions[i].to,
-            'reduction': enhancedPromotions[i].reduction
-        })
+        if(enhancedPromotions[i].reduction > 0){
+            prettyPromotions.push({
+                'scope': enhancedPromotions[i].scope,
+                'from': enhancedPromotions[i].from,
+                'to': enhancedPromotions[i].to,
+                'reduction': enhancedPromotions[i].reduction
+            });
+        }
     }
     return prettyPromotions;
 };

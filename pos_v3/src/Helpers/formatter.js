@@ -16,6 +16,7 @@ Formatter.numberMap = {
 
 Formatter.GetChineseNumber = function (number) {
     var res = '';
+    number = number * 10;
     var left = parseInt(number);
     res += Formatter.numberMap[left];
     if (left != number) {
@@ -68,7 +69,7 @@ Formatter.prototype.GetDiscountList = function (prettyDiscounts) {
     _.forEach(prettyDiscounts, function (prettyDiscount) {
         discountString += '名称：';
         var desc = prettyDiscount.scope.GetDescription();
-        discountString += desc ? desc + '打折' : (Formatter.GetChineseNumber(prettyDiscount.discount) + '折');
+        discountString += (desc ? desc + '打折' : (Formatter.GetChineseNumber(prettyDiscount.discount) + '折'));
         discountString += '，金额：' + prettyDiscount.reduction.toFixed(2) + '元\n';
     });
     return discountString;
