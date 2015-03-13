@@ -29,7 +29,7 @@ Formatter.GetChineseNumber = function (number) {
 Formatter.prototype.format = function (prettyItems, prettyDiscounts, prettyPromotions, prettyInfo) {
     var res = '';
     res += '***<没钱赚商店>购物清单***\n';
-    res += '打印时间：' + Formatter.getDateTime() + '\n';
+    res += '打印时间：' + this.GetDateTime() + '\n';
     res += this.GetSplitter();
     res += this.GetItemList(prettyItems);
     res += this.GetSplitter();
@@ -47,7 +47,7 @@ Formatter.prototype.GetDateTime = function () {
 };
 
 Formatter.prototype.GetSplitter = function () {
-    return '\n----------------------';
+    return '\n----------------------\n';
 };
 
 Formatter.prototype.GetItemList = function (prettyItems) {
@@ -87,7 +87,7 @@ Formatter.prototype.GetPromotionList = function (prettyPromotions) {
 
 Formatter.prototype.GetSummary = function (prettyInfo) {
     var res =
-        '总计：' + prettyInfo.sum + '(元)\n' +
-        '节省：' + prettyInfo.reduction + '(元)\n';
+        '总计：' + prettyInfo.sum.toFixed(2) + '(元)\n' +
+        '节省：' + prettyInfo.reduction.toFixed(2) + '(元)\n';
     return res;
 };

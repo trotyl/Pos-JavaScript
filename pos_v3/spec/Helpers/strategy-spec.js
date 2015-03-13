@@ -307,7 +307,6 @@ describe('Strategy: ', function () {
             Strategy.EnsurePromotions(promotions, {}, enhancedItems);
             var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
             expect(enhancedPromotions.length).toEqual(2);
-            console.log(enhancedPromotions);
             expect(enhancedPromotions[0].reduction).toBeCloseTo(2);
             expect(enhancedPromotions[1].reduction).toBeCloseTo(2);
         });

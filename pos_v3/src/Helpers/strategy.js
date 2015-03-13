@@ -6,7 +6,7 @@ function Strategy(allItems, discounts, promotions, discountMutual) {
 }
 
 Strategy.prototype.GenerageResult = function (input, formatter, output) {
-    var enhancedItems = Strategy.GetEnhancedItems(input);
+    var enhancedItems = this.GetEnhancedItems(input);
     Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
     var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
     var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
@@ -187,7 +187,7 @@ Strategy.PrettifySummary = function (prettyItems, prettyDiscounts, prettyPromoti
         reduction += prettyPromotions[k].reduction;
     }
     return {
-        'sum': sum,
+        'sum': sum - reduction,
         'reduction': reduction
     }
 };
