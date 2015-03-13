@@ -1,22 +1,53 @@
-function Strategy(allItems, discounts, promotions, discountMutual) {
+//function Strategy(allItems, discounts, promotions, discountMutual) {
+//    this.allItems = allItems;
+//    this.discounts = discounts;
+//    this.promotions = promotions;
+//    this.discountMutual = discountMutual;
+//}
+
+function Strategy(allItems, benefits, discountMutual) {
     this.allItems = allItems;
-    this.discounts = discounts;
-    this.promotions = promotions;
+    this.benefits = benefits;
     this.discountMutual = discountMutual;
 }
 
-Strategy.prototype.GenerageResult = function (input, formatter, output) {
-    var enhancedItems = this.GetEnhancedItems(input);
-    Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
-    Strategy.EnsurePromotions(this.promotions, {}, enhancedItems);
-    var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
-    var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
-    var prettyItems = Strategy.PrettifyItems(enhancedItems);
-    var prettyDiscounts = Strategy.PrettifyDiscounts(enhancedDiscounts);
-    var prettyPromotions = Strategy.PrettifyPromotions(enhancedPromotions);
-    var prettifySummary = Strategy.PrettifySummary(prettyItems, prettyDiscounts, prettyPromotions);
+//Strategy.prototype.GenerateResult = function (input, formatter, output) {
+//    var enhancedItems = this.GetEnhancedItems(input);
+//    Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
+//    Strategy.EnsurePromotions(this.promotions, {}, enhancedItems);
+//    var enhancedDiscounts = Strategy.GetDiscounts(enhancedItems);
+//    var enhancedPromotions = Strategy.GetPromotions(enhancedItems);
+//    var prettyItems = Strategy.PrettifyItems(enhancedItems);
+//    var prettyDiscounts = Strategy.PrettifyDiscounts(enhancedDiscounts);
+//    var prettyPromotions = Strategy.PrettifyPromotions(enhancedPromotions);
+//    var prettifySummary = Strategy.PrettifySummary(prettyItems, prettyDiscounts, prettyPromotions);
+//
+//    var result = formatter.format(prettyItems, prettyDiscounts, prettyPromotions, prettifySummary);
+//    output.log(result);
+//};
 
-    var result = formatter.format(prettyItems, prettyDiscounts, prettyPromotions, prettifySummary);
+Strategy.prototype.GenerateResult = function (input, formatter, output) {
+    var enhancedItems = this.GetEnhancedItems(input);
+    var enhancedBenefits = [];
+    for (var i in this.benefits) {
+        if (this.benefits[i].type == Benefit.types.discount) {
+            Strategy.EnsureDiscounts(this.discounts, this.discountMutual, enhancedItems);
+            Strategy.GetDiscounts(enhancedItems, enhancedBenefits);
+        }
+        else if (this.benefits[i].type == Benefit.types.promotion) {
+            Strategy.EnsurePromotions(this.promotions, {}, enhancedItems);
+            Strategy.GetPromotions(enhancedItems, enhancedBenefits);
+        }
+        else {
+            throw new Error('Type of the benefit is not available: ' + this.benefits[i].type);
+        }
+    }
+
+    var prettyItems = Strategy.PrettifyItems(enhancedItems);
+    var prettyBenefits = Strategy.PrettifyDiscounts(enhancedBenefits);
+    var prettifySummary = Strategy.PrettifySummary(prettyItems, prettyBenefits);
+
+    var result = formatter.format(prettyItems, prettyBenefits, prettifySummary);
     output.log(result);
 };
 
@@ -81,21 +112,49 @@ Strategy.EnsurePromotions = function (promotions, mutual, enhancedItems) {
     }, this);
 };
 
-Strategy.GetDiscounts = function (enhancedItems) {
-    var enhancedDiscounts = [];
+//Strategy.GetDiscounts = function (enhancedItems) {
+//    var enhancedDiscounts = [];
+//    _.forEach(enhancedItems, function (enhancedItem) {
+//        _.forEach(Scope.types, function (val, key) {
+//            if ((enhancedItem.discount & val) != 0) {
+//                var discount = enhancedItem.discounts[val];
+//                var label = discount.scope.GetLabel();
+//                var enhancedDiscount = _.findWhere(enhancedDiscounts, {'label': label});
+//                var tmpPrice = enhancedItem.price * (1 - discount.rate);
+//                if (enhancedDiscount) {
+//                    enhancedDiscount.reduction += tmpPrice * enhancedItem.amount;
+//                    enhancedItem.price = enhancedDiscount.keep ? enhancedItem.price : tmpPrice;
+//                }
+//                else {
+//                    enhancedDiscounts.push({
+//                        'label': label,
+//                        'keep': discount.keep,
+//                        'rate': discount.rate,
+//                        'scope': discount.scope,
+//                        'reduction': tmpPrice * enhancedItem.amount
+//                    })
+//                }
+//            }
+//        })
+//    });
+//    return enhancedDiscounts;
+//};
+
+Strategy.GetDiscounts = function (enhancedItems, enhancedBenefits) {
     _.forEach(enhancedItems, function (enhancedItem) {
         _.forEach(Scope.types, function (val, key) {
             if ((enhancedItem.discount & val) != 0) {
                 var discount = enhancedItem.discounts[val];
                 var label = discount.scope.GetLabel();
-                var enhancedDiscount = _.findWhere(enhancedDiscounts, {'label': label});
+                var enhancedDiscount = _.findWhere(enhancedBenefits, {'type': Benefit.types.discount, 'label': label});
                 var tmpPrice = enhancedItem.price * (1 - discount.rate);
                 if (enhancedDiscount) {
                     enhancedDiscount.reduction += tmpPrice * enhancedItem.amount;
                     enhancedItem.price = enhancedDiscount.keep ? enhancedItem.price : tmpPrice;
                 }
                 else {
-                    enhancedDiscounts.push({
+                    enhancedBenefits.push({
+                        'type': Benefit.types.discount,
                         'label': label,
                         'keep': discount.keep,
                         'rate': discount.rate,
@@ -106,24 +165,56 @@ Strategy.GetDiscounts = function (enhancedItems) {
             }
         })
     });
-    return enhancedDiscounts;
 };
 
-Strategy.GetPromotions = function (enhancedItems) {
-    var enhancedPromotions = [];
+//Strategy.GetPromotions = function (enhancedItems) {
+//    var enhancedPromotions = [];
+//    _.forEach(enhancedItems, function (enhancedItem) {
+//        _.forEach(Scope.types, function (val, key) {
+//            if ((enhancedItem.promotion & val) != 0) {
+//                var promotion = enhancedItem.promotions[val];
+//                var label = promotion.scope.GetLabel();
+//                var enhancedPromotion = _.findWhere(enhancedPromotions, {'label': label});
+//                var tmpPrice = enhancedItem.price * enhancedItem.amount;
+//                if (enhancedPromotion) {
+//                    enhancedPromotion.total += tmpPrice;
+//                    enhancedPromotion.reduction = enhancedPromotion.total > promotion.from ? parseInt(enhancedPromotion.total / promotion.from) * promotion.to : 0;
+//                }
+//                else {
+//                    enhancedPromotions.push({
+//                        'label': label,
+//                        'keep': promotion.keep,
+//                        'from': promotion.from,
+//                        'to': promotion.to,
+//                        'scope': promotion.scope,
+//                        'total': tmpPrice,
+//                        'reduction': tmpPrice > promotion.from ? parseInt(tmpPrice / promotion.from) * promotion.to : 0
+//                    })
+//                }
+//            }
+//        })
+//    });
+//    return enhancedPromotions;
+//};
+
+Strategy.GetPromotions = function (enhancedItems, enhancedBenefits) {
     _.forEach(enhancedItems, function (enhancedItem) {
         _.forEach(Scope.types, function (val, key) {
             if ((enhancedItem.promotion & val) != 0) {
                 var promotion = enhancedItem.promotions[val];
                 var label = promotion.scope.GetLabel();
-                var enhancedPromotion = _.findWhere(enhancedPromotions, {'label': label});
+                var enhancedPromotion = _.findWhere(enhancedBenefits, {
+                    'type': Benefit.types.promotion,
+                    'label': label
+                });
                 var tmpPrice = enhancedItem.price * enhancedItem.amount;
                 if (enhancedPromotion) {
                     enhancedPromotion.total += tmpPrice;
                     enhancedPromotion.reduction = enhancedPromotion.total > promotion.from ? parseInt(enhancedPromotion.total / promotion.from) * promotion.to : 0;
                 }
                 else {
-                    enhancedPromotions.push({
+                    enhancedBenefits.push({
+                        'type': Benefit.types.promotion,
                         'label': label,
                         'keep': promotion.keep,
                         'from': promotion.from,
@@ -136,7 +227,6 @@ Strategy.GetPromotions = function (enhancedItems) {
             }
         })
     });
-    return enhancedPromotions;
 };
 
 Strategy.PrettifyItems = function (enhancedItems) {
@@ -150,43 +240,60 @@ Strategy.PrettifyItems = function (enhancedItems) {
     return PrettyItems;
 };
 
-Strategy.PrettifyDiscounts = function (enhancedDiscounts) {
-    var prettyDiscounts = [];
-    for (var i in enhancedDiscounts) {
-        prettyDiscounts.push({
-            'scope': enhancedDiscounts[i].scope,
-            'discount': enhancedDiscounts[i].rate,
-            'reduction': enhancedDiscounts[i].reduction
-        })
-    }
-    return prettyDiscounts;
-};
+//Strategy.PrettifyDiscounts = function (enhancedDiscounts) {
+//    var prettyDiscounts = [];
+//    for (var i in enhancedDiscounts) {
+//        prettyDiscounts.push({
+//            'scope': enhancedDiscounts[i].scope,
+//            'discount': enhancedDiscounts[i].rate,
+//            'reduction': enhancedDiscounts[i].reduction
+//        })
+//    }
+//    return prettyDiscounts;
+//};
+//
+//Strategy.PrettifyPromotions = function (enhancedPromotions) {
+//    var prettyPromotions = [];
+//    for (var i in enhancedPromotions) {
+//        if(enhancedPromotions[i].reduction > 0){
+//            prettyPromotions.push({
+//                'scope': enhancedPromotions[i].scope,
+//                'from': enhancedPromotions[i].from,
+//                'to': enhancedPromotions[i].to,
+//                'reduction': enhancedPromotions[i].reduction
+//            });
+//        }
+//    }
+//    return prettyPromotions;
+//};
 
-Strategy.PrettifyPromotions = function (enhancedPromotions) {
-    var prettyPromotions = [];
-    for (var i in enhancedPromotions) {
-        if(enhancedPromotions[i].reduction > 0){
-            prettyPromotions.push({
-                'scope': enhancedPromotions[i].scope,
-                'from': enhancedPromotions[i].from,
-                'to': enhancedPromotions[i].to,
-                'reduction': enhancedPromotions[i].reduction
-            });
+Strategy.PrettifyBenefits = function (enhancedBenefits) {
+    var prettyBenefits = [];
+    for (var i in enhancedBenefits) {
+        if (!enhancedBenefits[i].reduction <= 0) {
+            return
         }
+        prettyBenefits.push({
+            'scope': enhancedBenefits[i].scope,
+            'from': enhancedBenefits[i].from,
+            'to': enhancedBenefits[i].to,
+            'reduction': enhancedBenefits[i].reduction
+        });
+
     }
-    return prettyPromotions;
+    return prettyBenefits;
 };
 
 Strategy.PrettifySummary = function (prettyItems, prettyDiscounts, prettyPromotions) {
     var sum = 0;
     var reduction = 0;
-    for(var i in prettyItems){
+    for (var i in prettyItems) {
         sum += prettyItems[i].item.price * prettyItems[i].amount;
     }
-    for(var j in prettyDiscounts){
+    for (var j in prettyDiscounts) {
         reduction += prettyDiscounts[j].reduction;
     }
-    for(var k in prettyPromotions){
+    for (var k in prettyPromotions) {
         reduction += prettyPromotions[k].reduction;
     }
     return {

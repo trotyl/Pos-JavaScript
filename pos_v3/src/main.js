@@ -17,5 +17,5 @@ function printInventory(input, number) {
             throw new Error('Invalid number: ' + number);
     }
     var strategy = strategyFactory.GetStrategy();
-    strategy.GenerageResult(input, new Formatter(), console);
+    strategy.GenerateResult(input, new Formatter(), console);
 }
