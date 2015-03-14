@@ -1,6 +1,5 @@
 // The derived class of Benefit for the type of Discount.
 function Discount(rate, scope, keep) {
-
     Discount.validate(rate);
     this.type = Benefit.types.discount;
     this.rate = rate;
