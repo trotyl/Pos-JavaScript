@@ -35,14 +35,14 @@ describe('Convertor: ', function () {
     });
 
     it('should be able to get the pretty items.', function () {
-        var prettyItems = Convertor.PrettifyItems(enhanceItems);
+        var prettyItems = _.map(enhanceItems, Convertor.PrettifyItem);
         expect(prettyItems.length).toEqual(4);
         expect(prettyItems[0].item).toEqual(items[0]);
         expect(prettyItems[0].amount).toEqual(1);
     });
 
     it('should be able to get the pretty benefits.', function () {
-        var prettyBenefits = Convertor.PrettifyBenefits(enhancedBenefits);
+        var prettyBenefits = _.map(enhancedBenefits, Convertor.PrettifyBenefit);
         expect(prettyBenefits.length).toEqual(2);
 
         expect(prettyBenefits[0].type).toEqual(Benefit.types.discount);

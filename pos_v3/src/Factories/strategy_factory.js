@@ -3,8 +3,13 @@ function StrategyFactory() {
 }
 
 StrategyFactory.output = function (result, formatter, logger) {
-    var prettyItems = Convertor.PrettifyItems(result.items);
-    var prettyBenefits = Convertor.PrettifyBenefits(result.benefits);
+    var prettyItems = _.map(result.items, Convertor.PrettifyItem);
+    var prettyBenefits = _.chain(result.benefits)
+        .map(Convertor.PrettifyBenefit)
+        .filter(function (benefit) {
+            return benefit.reduction > 0;
+        })
+        .value();
     var prettifySummary = Convertor.PrettifySummary(result.items, result.benefits);
 
     var res = formatter.format(prettyItems, prettyBenefits, prettifySummary);
