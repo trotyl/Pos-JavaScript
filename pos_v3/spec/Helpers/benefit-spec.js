@@ -78,6 +78,20 @@ describe('Benefit: ', function () {
             expect(promotion instanceof Benefit).toBeTruthy();
         });
 
+        it('should throw error if the from or to is incorrect.', function () {
+            var fun1 = function () {
+                return new Promotion(100, 5, scope);
+            };
+            var fun2 = function () {
+                return new Promotion(5, 100, scope);
+            };
+            var fun3 = function () {
+                return new Promotion(-1, -2, scope)
+            };
+            expect(fun1).not.toThrow();
+            expect(fun2).toThrow();
+            expect(fun3).toThrow();
+        });
     });
 
 
