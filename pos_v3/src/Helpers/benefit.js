@@ -1,6 +1,5 @@
 // The abstract class of Benefit, it should not be instantiated.
 function Benefit(){
-    throw new Error('Static class can not be instantiated.');
 }
 
 // The static enums for types of Benefit.
@@ -19,6 +18,8 @@ function Discount(rate, scope, keep) {
     this.scope = scope;
     this.keep = keep;
 }
+
+
 
 // Validate whether the discount rate is in range.
 Discount.Validate = function (rate) {
