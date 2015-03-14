@@ -1,6 +1,27 @@
 function Convertor() {
 }
 
+Convertor.enhanceItem = function (item, amount) {
+    return {
+        'item': item,
+        'amount': amount,
+        'origin': item.price * amount,
+        'total': item.price * amount,
+        'benefit': {},
+        'benefits': {}
+    }
+};
+
+Convertor.enhanceBenefit = function (benefit) {
+    return {
+        'type': benefit.type,
+        'benefit': benefit,
+        'items': {},
+        'total': 0,
+        'reduction': 0
+    }
+};
+
 Convertor.PrettifyItem = function (enhancedItem) {
     return {
         'item': enhancedItem.item,
@@ -28,7 +49,7 @@ Convertor.PrettifyBenefit = function (eBenefit) {
         }
     }
     else {
-        throw new Error('Type of the benefit is not available: ' + enhancedBenefits[i].type)
+        throw new Error('Type of the benefit is not available: ' + eBenefit.type)
     }
     return pBenefit;
 };

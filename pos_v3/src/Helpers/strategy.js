@@ -26,20 +26,14 @@ Strategy.prototype.GenerateResult = function (input) {
 
 Strategy.prototype.GetEnhancedItems = function (input) {
     var enhancedItems = [];
-    _.forEach(input, function (fakeItem) {
+    for(var i in input){
+        var fakeItem = input[i];
         for (var barcode in fakeItem) {
             var amount = fakeItem[barcode];
             var item = _.findWhere(this.allItems, {'barcode': barcode});
-            item && enhancedItems.push({
-                'item': item,
-                'amount': amount,
-                'origin': item.price * amount,
-                'total': item.price * amount,
-                'benefit': {},
-                'benefits': {}
-            });
+            item && enhancedItems.push(Convertor.enhanceItem(item, amount));
         }
-    }, this);
+    }
     return enhancedItems;
 };
 
@@ -47,13 +41,7 @@ Strategy.prototype.GetEnhancedBenefits = function (benefits) {
     var eBenefits = [];
     for(var i in benefits){
         var benefit = benefits[i];
-        benefit && eBenefits.push({
-            'type': benefit.type,
-            'benefit': benefit,
-            'items': {},
-            'total': 0,
-            'reduction': 0
-        });
+        benefit && eBenefits.push(Convertor.enhanceBenefit(benefit));
     }
     return eBenefits;
 };
