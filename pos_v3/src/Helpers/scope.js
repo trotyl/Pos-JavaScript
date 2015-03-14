@@ -1,6 +1,5 @@
 // The abstract class of Scope, it should not be instantiated.
 function Scope() {
-    throw new Error('Static class can not be instanced.');
 }
 
 // The static enums for types of Scope.
@@ -16,6 +15,8 @@ function SingleScope(item_name) {
     this.type = Scope.types.single;
     this.name = item_name;
 }
+
+SingleScope.prototype = new Scope();
 
 // The method to check whether a item is in the range of the scope.
 SingleScope.prototype.isInRange = function (item) {
@@ -39,6 +40,8 @@ function BrandScope(brand_name) {
     this.brand = brand_name;
 }
 
+BrandScope.prototype = new Scope();
+
 // The method to check whether a item is in the range of the scope.
 BrandScope.prototype.isInRange = function (item) {
     return this.brand == item.brand;
@@ -60,6 +63,8 @@ function FullScope(exceptions) {
     this.type = Scope.types.full;
     this.exceptions = exceptions;
 }
+
+FullScope.prototype = new Scope();
 
 // The method to check whether a item is in the range of the scope.
 FullScope.prototype.isInRange = function (item) {

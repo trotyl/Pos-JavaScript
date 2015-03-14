@@ -8,18 +8,15 @@ describe('Scope: ', function () {
 
     });
 
-    it('Itself should not be able to instanced.', function () {
-        var fun = function () {
-            return new Scope();
-        };
-        expect(fun).toThrow();
-    });
-
     describe('SingleScope ', function () {
         var scope;
 
         beforeEach(function () {
             scope = new SingleScope('可口可乐350ml');
+        });
+
+        it('should be derived from Scope.', function () {
+            expect(scope instanceof Scope).toBeTruthy();
         });
 
         it('should be able to constructed correctly.', function () {
@@ -43,6 +40,10 @@ describe('Scope: ', function () {
             scope = new BrandScope('可口可乐');
         });
 
+        it('should be derived from Scope.', function () {
+            expect(scope instanceof Scope).toBeTruthy();
+        });
+
         it('should be able to constructed correctly.', function () {
             expect(scope.type).toEqual(Scope.types.brand);
             expect(scope.brand).toEqual('可口可乐');
@@ -63,6 +64,10 @@ describe('Scope: ', function () {
         beforeEach(function () {
             var exceptions = [new BrandScope('可口可乐')];
             scope = new FullScope(exceptions);
+        });
+
+        it('should be derived from Scope.', function () {
+            expect(scope instanceof Scope).toBeTruthy();
         });
 
         it('should be able to constructed correctly.', function () {
