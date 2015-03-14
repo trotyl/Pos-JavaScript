@@ -30,27 +30,27 @@ Formatter.getChineseNumber = function (number) {
 Formatter.prototype.format = function (prettyItems, prettyBenefits, prettyInfo) {
     var res = '';
     res += '***<没钱赚商店>购物清单***\n';
-    res += '打印时间：' + this.GetDateTime() + '\n';
-    res += this.GetSplitter();
-    res += this.GetItemList(prettyItems);
-    res += this.GetSplitter();
+    res += '打印时间：' + this.getDateTime() + '\n';
+    res += this.getSplitter();
+    res += this.getItemList(prettyItems);
+    res += this.getSplitter();
     res += '优惠信息：\n';
-    res += this.GetBenefitList(prettyBenefits);
-    res += this.GetSplitter();
-    res += this.GetSummary(prettyInfo);
+    res += this.getBenefitList(prettyBenefits);
+    res += this.getSplitter();
+    res += this.getSummary(prettyInfo);
     res += '**********************\n';
     return res;
 };
 
-Formatter.prototype.GetDateTime = function () {
+Formatter.prototype.getDateTime = function () {
     return moment().format('YYYY年MM月DD日 HH:mm:ss');
 };
 
-Formatter.prototype.GetSplitter = function () {
+Formatter.prototype.getSplitter = function () {
     return '\n----------------------\n';
 };
 
-Formatter.prototype.GetItemList = function (prettyItems) {
+Formatter.prototype.getItemList = function (prettyItems) {
     var itemString = '';
     _.forEach(prettyItems, function (prettyItem) {
         itemString +=
@@ -63,7 +63,7 @@ Formatter.prototype.GetItemList = function (prettyItems) {
     return itemString;
 };
 
-Formatter.prototype.GetBenefitList = function (prettyBenefits) {
+Formatter.prototype.getBenefitList = function (prettyBenefits) {
     var benefitString = '';
     _.forEach(prettyBenefits, function (prettyBenefit) {
         benefitString += '名称：';
@@ -81,9 +81,6 @@ Formatter.prototype.GetBenefitList = function (prettyBenefits) {
     return benefitString;
 };
 
-Formatter.prototype.GetSummary = function (prettyInfo) {
-    var res =
-        '总计：' + prettyInfo.sum.toFixed(2) + '(元)\n' +
-        '节省：' + prettyInfo.reduction.toFixed(2) + '(元)\n';
-    return res;
+Formatter.prototype.getSummary = function (prettyInfo) {
+    return '总计：' + prettyInfo.sum.toFixed(2) + "(元)\n节省：" + prettyInfo.reduction.toFixed(2) + '(元)\n';
 };
