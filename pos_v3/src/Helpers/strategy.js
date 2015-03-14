@@ -13,6 +13,7 @@ Strategy.prototype.GenerateResult = function (input, formatter, output) {
     for (var jj in enhancedBenefits) {
         Strategy.GetBenefit(enhancedBenefits[jj]);
     }
+    console.log(enhancedBenefits);
     var prettyItems = Strategy.PrettifyItems(enhancedItems);
     var prettyBenefits = Strategy.PrettifyBenefits(enhancedBenefits);
     var prettifySummary = Strategy.PrettifySummary(prettyItems, prettyBenefits);

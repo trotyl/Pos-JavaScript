@@ -18,7 +18,7 @@ FirstStrategyFactory.prototype.GetStrategy = function () {
         ],
         {
             0x01: {0x03: 0x02},
-            0x02: {}
+            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06}
         }
     )
 };
@@ -38,7 +38,7 @@ SecondStrategyFactory.prototype.GetStrategy = function () {
         ],
         {
             0x01: {0x03: 0x01},
-            0x02: {}
+            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06}
         }
     )
 };
@@ -54,12 +54,12 @@ ThirdStrategyFactory.prototype.GetStrategy = function () {
         [
             new Discount(0.95, scope1, false),
             new Discount(0.9, scope0, false),
-            new BrandPromotionFactory().GetPromotion('康师傅'),
-            new FullPromotionFactory().GetPromotion([scope2])
+            new BrandPromotionFactory().GetPromotion('康师傅', false),
+            new FullPromotionFactory().GetPromotion([scope2], false, 5)
         ],
         {
             0x01: {0x03: 0x03},
-            0x02: {}
+            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06}
         }
     )
 };
