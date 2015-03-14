@@ -43,11 +43,11 @@ describe('Scope: ', function () {
         });
 
         it('should be able to get correct description of discount.', function () {
-            expect(scope.GetDiscountDescription()).toEqual('可口可乐350ml单品');
+            expect(scope.getDiscountDescription()).toEqual('可口可乐350ml单品');
         });
 
         it('should be able to get correct description of promotion.', function () {
-            expect(scope.GetPromotionDescription()).toEqual('可口可乐350ml');
+            expect(scope.getPromotionDescription()).toEqual('可口可乐350ml');
         });
     });
 
@@ -75,11 +75,11 @@ describe('Scope: ', function () {
         });
 
         it('should be able to get correct description of discount.', function () {
-            expect(scope.GetDiscountDescription()).toEqual('可口可乐品牌');
+            expect(scope.getDiscountDescription()).toEqual('可口可乐品牌');
         });
 
         it('should be able to get correct description of promotion.', function () {
-            expect(scope.GetPromotionDescription()).toEqual('可口可乐品牌');
+            expect(scope.getPromotionDescription()).toEqual('可口可乐品牌');
         });
     });
 
@@ -108,11 +108,11 @@ describe('Scope: ', function () {
         });
 
         it('should be able to get correct description of discount.', function () {
-            expect(scope.GetDiscountDescription()).toEqual('');
+            expect(scope.getDiscountDescription()).toEqual('');
         });
 
         it('should be able to get correct description of promotion.', function () {
-            expect(scope.GetPromotionDescription()).toEqual('');
+            expect(scope.getPromotionDescription()).toEqual('');
         });
     });
 });

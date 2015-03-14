@@ -12,11 +12,11 @@ BrandScope.prototype.isInRange = function (item) {
 };
 
 // The method to get the description string for Discount usage.
-BrandScope.prototype.GetDiscountDescription = function () {
+BrandScope.prototype.getDiscountDescription = function () {
     return this.brand + '品牌';
 };
 
 // The method to get the description string for Promotion usage.
-BrandScope.prototype.GetPromotionDescription = function () {
+BrandScope.prototype.getPromotionDescription = function () {
     return this.brand + '品牌';
 };

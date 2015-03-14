@@ -3,20 +3,20 @@ function StrategyFactory() {
 }
 
 StrategyFactory.output = function (result, formatter, logger) {
-    var prettyItems = _.map(result.items, Convertor.PrettifyItem);
+    var prettyItems = _.map(result.items, Convertor.prettifyItem);
     var prettyBenefits = _.chain(result.benefits)
-        .map(Convertor.PrettifyBenefit)
+        .map(Convertor.prettifyBenefit)
         .filter(function (benefit) {
             return benefit.reduction > 0;
         })
         .value();
-    var prettifySummary = Convertor.PrettifySummary(result.items, result.benefits);
+    var prettifySummary = Convertor.prettifySummary(result.items, result.benefits);
 
     var res = formatter.format(prettyItems, prettyBenefits, prettifySummary);
     logger.log(res);
 };
 
-StrategyFactory.GetStrategy = function (number) {
+StrategyFactory.getStrategy = function (number) {
     var map = {
         1: FirstStrategyFactory,
         2: SecondStrategyFactory,
@@ -26,5 +26,5 @@ StrategyFactory.GetStrategy = function (number) {
     if(!map[number]){
         throw new Error('Invalid number: ' + number);
     }
-    return new map[number]().GetStrategy();
+    return new map[number]().getStrategy();
 };

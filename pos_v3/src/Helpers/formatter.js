@@ -14,7 +14,7 @@ Formatter.numberMap = {
     9: '九'
 };
 
-Formatter.GetChineseNumber = function (number) {
+Formatter.getChineseNumber = function (number) {
     var res = '';
     number = number * 10;
     var left = parseInt(number);
@@ -69,11 +69,11 @@ Formatter.prototype.GetBenefitList = function (prettyBenefits) {
         benefitString += '名称：';
         var desc;
         if(prettyBenefit.type == Benefit.types.discount){
-            desc = prettyBenefit.scope.GetDiscountDescription();
-            benefitString += (desc ? desc + '打折' : (Formatter.GetChineseNumber(prettyBenefit.discount) + '折'));
+            desc = prettyBenefit.scope.getDiscountDescription();
+            benefitString += (desc ? desc + '打折' : (Formatter.getChineseNumber(prettyBenefit.discount) + '折'));
         }
         else if(prettyBenefit.type == Benefit.types.promotion){
-            desc = prettyBenefit.scope.GetPromotionDescription();
+            desc = prettyBenefit.scope.getPromotionDescription();
             benefitString += (desc + '满' + prettyBenefit.from + '减' + prettyBenefit.to);
         }
         benefitString += '，金额：' + prettyBenefit.reduction.toFixed(2) + '元\n';

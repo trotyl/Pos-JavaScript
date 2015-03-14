@@ -8,9 +8,9 @@ function printInventory(input, number, output) {
     output = output || console;
 
     // Get the Strategy from the StrategyFactory.
-    var strategy = StrategyFactory.GetStrategy(number);
+    var strategy = StrategyFactory.getStrategy(number);
 
-    // Call the GenerateResult method to run the Strategy.
-    var result = strategy.GenerateResult(input);
+    // Call the generateResult method to run the Strategy.
+    var result = strategy.generateResult(input);
     StrategyFactory.output(result, new Formatter(), output)
 }

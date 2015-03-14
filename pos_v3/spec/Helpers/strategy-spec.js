@@ -32,7 +32,7 @@ describe('Strategy: ', function () {
             { 'ITEM000005' : 30 },
             { 'ITEM000003' : 12 }
         ];
-        var enhancedItems = strategy.GetEnhancedItems(input);
+        var enhancedItems = strategy.getEnhancedItems(input);
         expect(enhancedItems.length).toEqual(4);
         expect(enhancedItems[0].item.barcode).toEqual('ITEM000000');
         expect(enhancedItems[0].amount).toEqual(20);

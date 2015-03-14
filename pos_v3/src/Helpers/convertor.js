@@ -22,14 +22,14 @@ Convertor.enhanceBenefit = function (benefit) {
     }
 };
 
-Convertor.PrettifyItem = function (enhancedItem) {
+Convertor.prettifyItem = function (enhancedItem) {
     return {
         'item': enhancedItem.item,
         'amount': enhancedItem.amount
     };
 };
 
-Convertor.PrettifyBenefit = function (eBenefit) {
+Convertor.prettifyBenefit = function (eBenefit) {
     var pBenefit;
     if (eBenefit.type == Benefit.types.discount) {
         pBenefit = {
@@ -54,7 +54,7 @@ Convertor.PrettifyBenefit = function (eBenefit) {
     return pBenefit;
 };
 
-Convertor.PrettifySummary = function (prettyItems, prettyBenefits) {
+Convertor.prettifySummary = function (prettyItems, prettyBenefits) {
     var sum = 0;
     var reduction = 0;
     for (var i in prettyItems) {

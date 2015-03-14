@@ -1,7 +1,7 @@
 // The derived class of Benefit for the type of Discount.
 function Discount(rate, scope, keep) {
 
-    Discount.Validate(rate);
+    Discount.validate(rate);
     this.type = Benefit.types.discount;
     this.rate = rate;
     this.scope = scope;
@@ -10,8 +10,8 @@ function Discount(rate, scope, keep) {
 
 Discount.prototype = new Benefit();
 
-// Validate whether the discount rate is in range.
-Discount.Validate = function (rate) {
+// validate whether the discount rate is in range.
+Discount.validate = function (rate) {
     if(rate < 0 || rate > 1){
         throw new RangeError("The rate of rate is out of range(0, 1)! It's " + rate);
     }

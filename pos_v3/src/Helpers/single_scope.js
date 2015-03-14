@@ -12,11 +12,11 @@ SingleScope.prototype.isInRange = function (item) {
 };
 
 // The method to get the description string for Discount usage.
-SingleScope.prototype.GetDiscountDescription = function () {
+SingleScope.prototype.getDiscountDescription = function () {
     return this.name + '单品';
 };
 
 // The method to get the description string for Promotion usage.
-SingleScope.prototype.GetPromotionDescription = function () {
+SingleScope.prototype.getPromotionDescription = function () {
     return this.name;
 };

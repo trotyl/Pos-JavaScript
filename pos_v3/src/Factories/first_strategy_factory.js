@@ -5,7 +5,7 @@ function FirstStrategyFactory() {
 FirstStrategyFactory.prototype = new StrategyFactory();
 
 // The factory method to generate the first strategy.
-FirstStrategyFactory.prototype.GetStrategy = function () {
+FirstStrategyFactory.prototype.getStrategy = function () {
     // The scopes for the sake of FullScope condition.
     var scope0 = new BrandScope('可口可乐');
     var scope1 = new SingleScope('可口可乐350ml');
@@ -15,9 +15,9 @@ FirstStrategyFactory.prototype.GetStrategy = function () {
     return new Strategy(
         loadAllItems(),
         [
-            new BrandBenefitFactory().GetDiscount('可口可乐', true),
-            new SingleBenefitFactory().GetDiscount('可口可乐350ml', true),
-            new FullBenefitFactory().GetPromotion([scope0, scope1, scope2], true)
+            new BrandBenefitFactory().getDiscount('可口可乐', true),
+            new SingleBenefitFactory().getDiscount('可口可乐350ml', true),
+            new FullBenefitFactory().getPromotion([scope0, scope1, scope2], true)
         ],
         {
             0x01: {0x03: 0x02, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},

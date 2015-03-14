@@ -29,8 +29,8 @@ describe('Formatter: ', function () {
     });
 
     it('should be able to get the right chinese number', function () {
-        expect(Formatter.GetChineseNumber(0.9)).toEqual('九');
-        expect(Formatter.GetChineseNumber(0.95)).toEqual('九五');
+        expect(Formatter.getChineseNumber(0.9)).toEqual('九');
+        expect(Formatter.getChineseNumber(0.95)).toEqual('九五');
     });
 
     it('should be able to generate the correct item list.', function () {

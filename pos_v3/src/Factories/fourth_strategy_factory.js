@@ -5,18 +5,18 @@ function FourthStrategyFactory() {
 FourthStrategyFactory.prototype = new StrategyFactory();
 
 // The factory method to generate the third strategy.
-FourthStrategyFactory.prototype.GetStrategy = function () {
+FourthStrategyFactory.prototype.getStrategy = function () {
     var scope2 = new SingleScope('雪碧');
 
     // Return the exact Strategy object meet the third strategy.
     return new Strategy(
         loadAllItems(),
         [
-            new SingleBenefitFactory().GetDiscount('可口可乐350ml', true),
-            new BrandBenefitFactory().GetDiscount('可口可乐', true),
-            new SingleBenefitFactory().GetPromotion('果粒橙', true),
-            new BrandBenefitFactory().GetPromotion('云山', true),
-            new FullBenefitFactory().GetDiscount([scope2], false)
+            new SingleBenefitFactory().getDiscount('可口可乐350ml', true),
+            new BrandBenefitFactory().getDiscount('可口可乐', true),
+            new SingleBenefitFactory().getPromotion('果粒橙', true),
+            new BrandBenefitFactory().getPromotion('云山', true),
+            new FullBenefitFactory().getDiscount([scope2], false)
         ],
         {
             0x01: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},

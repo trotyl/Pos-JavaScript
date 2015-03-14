@@ -9,14 +9,14 @@ function Strategy(allItems, benefits, mutual) {
 }
 
 // The method to run the strategy.
-Strategy.prototype.GenerateResult = function (input) {
-    var enhancedItems = this.GetEnhancedItems(input);
-    var enhancedBenefits = this.GetEnhancedBenefits(this.benefits);
+Strategy.prototype.generateResult = function (input) {
+    var enhancedItems = this.getEnhancedItems(input);
+    var enhancedBenefits = this.getEnhancedBenefits(this.benefits);
     for (var ii in enhancedItems) {
-        Strategy.EnsureBenefit(enhancedItems[ii], this.mutual, enhancedBenefits);
+        Strategy.ensureBenefit(enhancedItems[ii], this.mutual, enhancedBenefits);
     }
     for (var jj in enhancedBenefits) {
-        Strategy.GetBenefit(enhancedBenefits[jj]);
+        Strategy.getBenefit(enhancedBenefits[jj]);
     }
     return {
         'items': enhancedItems,
@@ -24,7 +24,7 @@ Strategy.prototype.GenerateResult = function (input) {
     };
 };
 
-Strategy.prototype.GetEnhancedItems = function (input) {
+Strategy.prototype.getEnhancedItems = function (input) {
     var enhancedItems = [];
     for(var i in input){
         var fakeItem = input[i];
@@ -37,7 +37,7 @@ Strategy.prototype.GetEnhancedItems = function (input) {
     return enhancedItems;
 };
 
-Strategy.prototype.GetEnhancedBenefits = function (benefits) {
+Strategy.prototype.getEnhancedBenefits = function (benefits) {
     var eBenefits = [];
     for(var i in benefits){
         var benefit = benefits[i];
@@ -46,7 +46,7 @@ Strategy.prototype.GetEnhancedBenefits = function (benefits) {
     return eBenefits;
 };
 
-Strategy.EnsureBenefit = function (eItem, mutual, eBenefits) {
+Strategy.ensureBenefit = function (eItem, mutual, eBenefits) {
     if (!eItem || !mutual || !eBenefits) {
         return
     }
@@ -83,7 +83,7 @@ Strategy.EnsureBenefit = function (eItem, mutual, eBenefits) {
     }
 };
 
-Strategy.GetBenefit = function (eBenefit) {
+Strategy.getBenefit = function (eBenefit) {
     var compute = function (current, from, to) {
         return current >= from ? parseInt(current / from) * to : 0;
     };

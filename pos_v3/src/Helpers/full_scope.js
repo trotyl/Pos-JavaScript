@@ -19,11 +19,11 @@ FullScope.prototype.isInRange = function (item) {
 };
 
 // The method to get the description string for Discount usage.
-FullScope.prototype.GetDiscountDescription = function () {
+FullScope.prototype.getDiscountDescription = function () {
     return '';
 };
 
 // The method to get the description string for Promotion usage.
-FullScope.prototype.GetPromotionDescription = function () {
+FullScope.prototype.getPromotionDescription = function () {
     return '';
 };
