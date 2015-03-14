@@ -17,14 +17,78 @@ StrategyFactory.output = function (result, formatter, logger) {
 };
 
 StrategyFactory.getStrategy = function (number) {
+    var scope0 = new BrandScope('可口可乐');
+    var scope1 = new SingleScope('可口可乐350ml');
+    var scope2 = new SingleScope('康师傅方便面');
+    var scope3 = new SingleScope('云山苹果');
+    var scope4 = new SingleScope('雪碧');
+
+    // Return the exact Strategy object meet the first strategy.
+
     var map = {
-        1: FirstStrategyFactory,
-        2: SecondStrategyFactory,
-        3: ThirdStrategyFactory,
-        4: FourthStrategyFactory
+        1: function () {
+            return new Strategy(
+                loadAllItems(),
+                [
+                    new BrandBenefitFactory().getDiscount('可口可乐', true),
+                    new SingleBenefitFactory().getDiscount('可口可乐350ml', true),
+                    new FullBenefitFactory().getPromotion([scope0, scope1, scope2], true)
+                ],
+                {
+                    0x01: {0x03: 0x02, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
+                    0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07}
+                }
+            )
+        },
+        2: function () {
+            return new Strategy(
+                loadAllItems(),
+                [
+                    new SingleBenefitFactory().getDiscount('可口可乐350ml', true),
+                    new BrandBenefitFactory().getDiscount('可口可乐', true),
+                    new BrandBenefitFactory().getPromotion('康师傅', true),
+                    new SingleBenefitFactory().getPromotion('云山荔枝', true)
+                ],
+                {
+                    0x01: {0x03: 0x01, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
+                    0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07}
+                }
+            )
+        },
+        3: function () {
+            return new Strategy(
+                loadAllItems(),
+                [
+                    new SingleBenefitFactory().getDiscount('可口可乐350ml', false),
+                    new BrandBenefitFactory().getDiscount('可口可乐', false),
+                    new BrandBenefitFactory().getPromotion('康师傅', false),
+                    new FullBenefitFactory().getPromotion([scope3], false, 5)
+                ],
+                {
+                    0x01: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
+                    0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07}
+                }
+            )
+        },
+        4: function () {
+            return new Strategy(
+                loadAllItems(),
+                [
+                    new SingleBenefitFactory().getDiscount('可口可乐350ml', true),
+                    new BrandBenefitFactory().getDiscount('可口可乐', true),
+                    new SingleBenefitFactory().getPromotion('果粒橙', true),
+                    new BrandBenefitFactory().getPromotion('云山', true),
+                    new FullBenefitFactory().getDiscount([scope4], false)
+                ],
+                {
+                    0x01: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
+                    0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07}
+                }
+            )
+        }
     };
     if(!map[number]){
         throw new Error('Invalid number: ' + number);
     }
-    return new map[number]().getStrategy();
+    return new map[number]();
 };
