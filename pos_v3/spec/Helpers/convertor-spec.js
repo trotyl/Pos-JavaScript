@@ -1,4 +1,4 @@
-describe('Peeler: ', function () {
+describe('Convertor: ', function () {
     var items, enhanceItems, benefits, enhancedBenefits;
 
     beforeEach(function () {
@@ -35,14 +35,14 @@ describe('Peeler: ', function () {
     });
 
     it('should be able to get the pretty items.', function () {
-        var prettyItems = Peeler.PrettifyItems(enhanceItems);
+        var prettyItems = Convertor.PrettifyItems(enhanceItems);
         expect(prettyItems.length).toEqual(4);
         expect(prettyItems[0].item).toEqual(items[0]);
         expect(prettyItems[0].amount).toEqual(1);
     });
 
     it('should be able to get the pretty benefits.', function () {
-        var prettyBenefits = Peeler.PrettifyBenefits(enhancedBenefits);
+        var prettyBenefits = Convertor.PrettifyBenefits(enhancedBenefits);
         expect(prettyBenefits.length).toEqual(2);
 
         expect(prettyBenefits[0].type).toEqual(Benefit.types.discount);
@@ -58,7 +58,7 @@ describe('Peeler: ', function () {
     });
 
     it('should be able to get the pretty summary.', function () {
-        var prettySummary = Peeler.PrettifySummary(enhanceItems, enhancedBenefits);
+        var prettySummary = Convertor.PrettifySummary(enhanceItems, enhancedBenefits);
         expect(prettySummary.sum).toEqual(10.5);
         expect(prettySummary.reduction).toEqual(4);
     });

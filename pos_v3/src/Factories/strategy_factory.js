@@ -3,9 +3,9 @@ function StrategyFactory() {
 }
 
 StrategyFactory.output = function (result, formatter, logger) {
-    var prettyItems = Peeler.PrettifyItems(result.items);
-    var prettyBenefits = Peeler.PrettifyBenefits(result.benefits);
-    var prettifySummary = Peeler.PrettifySummary(result.items, result.benefits);
+    var prettyItems = Convertor.PrettifyItems(result.items);
+    var prettyBenefits = Convertor.PrettifyBenefits(result.benefits);
+    var prettifySummary = Convertor.PrettifySummary(result.items, result.benefits);
 
     var res = formatter.format(prettyItems, prettyBenefits, prettifySummary);
     logger.log(res);

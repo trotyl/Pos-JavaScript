@@ -1,7 +1,7 @@
-function Peeler() {
+function Convertor() {
 }
 
-Peeler.PrettifyItems = function (enhancedItems) {
+Convertor.PrettifyItems = function (enhancedItems) {
     var PrettyItems = [];
     for (var i in enhancedItems) {
         PrettyItems.push({
@@ -12,7 +12,7 @@ Peeler.PrettifyItems = function (enhancedItems) {
     return PrettyItems;
 };
 
-Peeler.PrettifyBenefits = function (enhancedBenefits) {
+Convertor.PrettifyBenefits = function (enhancedBenefits) {
     var prettyBenefits = [];
     for (var i in enhancedBenefits) {
         var eBenefit = enhancedBenefits[i];
@@ -45,7 +45,7 @@ Peeler.PrettifyBenefits = function (enhancedBenefits) {
     return prettyBenefits;
 };
 
-Peeler.PrettifySummary = function (prettyItems, prettyBenefits) {
+Convertor.PrettifySummary = function (prettyItems, prettyBenefits) {
     var sum = 0;
     var reduction = 0;
     for (var i in prettyItems) {
