@@ -79,7 +79,6 @@ Strategy.EnsureBenefit = function (eItem, mutual, eBenefits) {
                     delete eBenefit.items[eItem.item.barcode];
                 }
             }
-
         }
     }
 };
@@ -102,6 +101,5 @@ Strategy.GetBenefit = function (eBenefit) {
             eItem.total = (eItem.total - newReduction + eBenefit.reduction);
             eBenefit.reduction = newReduction;
         }
-
     }
 };

@@ -34,6 +34,18 @@ describe('Convertor: ', function () {
         })
     });
 
+    it('should be able to get the enhanced items.', function () {
+        var eItems = _.map(items, Convertor.enhanceItem);
+        expect(eItems.length).toEqual(4);
+        expect(eItems[0].item).toEqual(items[0]);
+    });
+
+    it('should be able to get the enhanced benefits.', function () {
+        var eBenefits = _.map(benefits, Convertor.enhanceBenefit);
+        expect(eBenefits.length).toEqual(2);
+        expect(eBenefits[0].benefit).toEqual(benefits[0]);
+    });
+
     it('should be able to get the pretty items.', function () {
         var prettyItems = _.map(enhanceItems, Convertor.PrettifyItem);
         expect(prettyItems.length).toEqual(4);
