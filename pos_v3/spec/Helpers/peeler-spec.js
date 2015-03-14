@@ -6,7 +6,7 @@ describe('Peeler: ', function () {
             new Item('ITEM000000','饮料', '可口可乐', '可口可乐350ml', '瓶', 3.00),
             new Item('ITEM000010','饮料', '可口可乐', '可口可乐550ml', '瓶', 4.00),
             new Item('ITEM000005','食品', '康师傅', '康师傅方便面', '袋', 4.50),
-            new Item('ITEM000008','饮料', '康师傅', '康师傅冰红茶', '瓶', 3.00),
+            new Item('ITEM000008','饮料', '康师傅', '康师傅冰红茶', '瓶', 3.00)
         ];
         enhanceItems = _.map(items, function (item) {
             return {
@@ -55,6 +55,12 @@ describe('Peeler: ', function () {
         expect(prettyBenefits[1].from).toEqual(100);
         expect(prettyBenefits[1].to).toEqual(5);
         expect(prettyBenefits[1].reduction).toEqual(2);
+    });
+
+    it('should be able to get the pretty summary.', function () {
+        var prettySummary = Peeler.PrettifySummary(enhanceItems, enhancedBenefits);
+        expect(prettySummary.sum).toEqual(10.5);
+        expect(prettySummary.reduction).toEqual(4);
     });
 
 });
