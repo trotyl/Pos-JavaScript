@@ -1,14 +1,21 @@
+// The abstract class of StrategyFactory, it should not be instantiated.
 function StrategyFactory() {
-    // This method should never be called.
-    throw new Error('Static class can not be instanced.');
+    throw new Error('Static class can not be instantiated.');
 }
 
-function FirstStrategyFactory() {}
 
+// The derived class of StrategyFactory for the first strategy.
+function FirstStrategyFactory() {
+}
+
+// The factory method to generate the first strategy.
 FirstStrategyFactory.prototype.GetStrategy = function () {
+    // The scopes for the sake of FullScope condition.
     var scope0 = new BrandScope('可口可乐');
     var scope1 = new SingleScope('可口可乐350ml');
     var scope2 = new SingleScope('康师傅方便面');
+
+    // Return the exact Strategy object meet the first strategy.
     return new Strategy(
         loadAllItems(),
         [
@@ -23,9 +30,14 @@ FirstStrategyFactory.prototype.GetStrategy = function () {
     )
 };
 
-function SecondStrategyFactory() {}
 
+// The derived class of StrategyFactory for the second strategy.
+function SecondStrategyFactory() {
+}
+
+// The factory method to generate the second strategy.
 SecondStrategyFactory.prototype.GetStrategy = function () {
+    // Return the exact Strategy object meet the second strategy.
     return new Strategy(
         loadAllItems(),
         [
@@ -41,10 +53,16 @@ SecondStrategyFactory.prototype.GetStrategy = function () {
     )
 };
 
-function ThirdStrategyFactory() {}
 
+// The derived class of StrategyFactory for the third strategy.
+function ThirdStrategyFactory() {
+}
+
+// The factory method to generate the third strategy.
 ThirdStrategyFactory.prototype.GetStrategy = function () {
     var scope2 = new SingleScope('云山苹果');
+
+    // Return the exact Strategy object meet the third strategy.
     return new Strategy(
         loadAllItems(),
         [
@@ -60,10 +78,16 @@ ThirdStrategyFactory.prototype.GetStrategy = function () {
     )
 };
 
-function FourthStrategyFactory() {}
 
+// The derived class of StrategyFactory for the fourth strategy.
+function FourthStrategyFactory() {
+}
+
+// The factory method to generate the third strategy.
 FourthStrategyFactory.prototype.GetStrategy = function () {
     var scope2 = new SingleScope('雪碧');
+
+    // Return the exact Strategy object meet the third strategy.
     return new Strategy(
         loadAllItems(),
         [
