@@ -1,7 +1,15 @@
 // The abstract class of StrategyFactory, it should not be instantiated.
 function StrategyFactory() {
-    throw new Error('Static class can not be instantiated.');
 }
+
+StrategyFactory.output = function (result, formatter, logger) {
+    var prettyItems = Peeler.PrettifyItems(result.items);
+    var prettyBenefits = Peeler.PrettifyBenefits(result.benefits);
+    var prettifySummary = Peeler.PrettifySummary(result.items, result.benefits);
+
+    var res = formatter.format(prettyItems, prettyBenefits, prettifySummary);
+    logger.log(res);
+};
 
 
 // The derived class of StrategyFactory for the first strategy.

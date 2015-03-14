@@ -30,5 +30,6 @@ function printInventory(input, number, output) {
     var strategy = strategyFactory.GetStrategy();
 
     // Call the GenerateResult method to run the Strategy.
-    strategy.GenerateResult(input, new Formatter(), output);
+    var result = strategy.GenerateResult(input);
+    StrategyFactory.output(result, new Formatter(), output)
 }

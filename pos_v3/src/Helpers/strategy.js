@@ -9,7 +9,7 @@ function Strategy(allItems, benefits, mutual) {
 }
 
 // The method to run the strategy.
-Strategy.prototype.GenerateResult = function (input, formatter, output) {
+Strategy.prototype.GenerateResult = function (input) {
     var enhancedItems = this.GetEnhancedItems(input);
     var enhancedBenefits = this.GetEnhancedBenefits(this.benefits);
     for (var ii in enhancedItems) {
@@ -18,12 +18,10 @@ Strategy.prototype.GenerateResult = function (input, formatter, output) {
     for (var jj in enhancedBenefits) {
         Strategy.GetBenefit(enhancedBenefits[jj]);
     }
-    var prettyItems = Peeler.PrettifyItems(enhancedItems);
-    var prettyBenefits = Peeler.PrettifyBenefits(enhancedBenefits);
-    var prettifySummary = Peeler.PrettifySummary(prettyItems, prettyBenefits);
-
-    var result = formatter.format(prettyItems, prettyBenefits, prettifySummary);
-    output.log(result);
+    return {
+        'items': enhancedItems,
+        'benefits': enhancedBenefits
+    };
 };
 
 Strategy.prototype.GetEnhancedItems = function (input) {
