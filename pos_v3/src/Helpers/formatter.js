@@ -69,11 +69,11 @@ Formatter.prototype.GetBenefitList = function (prettyBenefits) {
         benefitString += '名称：';
         var desc;
         if(prettyBenefit.type == Benefit.types.discount){
-            desc = prettyBenefit.scope.GetDescription();
+            desc = prettyBenefit.scope.GetDiscountDescription();
             benefitString += (desc ? desc + '打折' : (Formatter.GetChineseNumber(prettyBenefit.discount) + '折'));
         }
         else if(prettyBenefit.type == Benefit.types.promotion){
-            desc = prettyBenefit.scope.GetSimpleDescription();
+            desc = prettyBenefit.scope.GetPromotionDescription();
             benefitString += (desc + '满' + prettyBenefit.from + '减' + prettyBenefit.to);
         }
         benefitString += '，金额：' + prettyBenefit.reduction.toFixed(2) + '元\n';
