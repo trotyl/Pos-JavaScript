@@ -104,9 +104,9 @@ Strategy.GetBenefit = function (eBenefit) {
     for(var i in eBenefit.items){
         var eItem = eBenefit.items[i];
         if(eBenefit.type == Benefit.types.discount){
-            var tmpPrice =  (eBenefit.benefit.keep? eItem.origin: eItem.total) * eBenefit.benefit.rate;
-            eBenefit.reduction += (eBenefit.benefit.keep? eItem.origin: eItem.total) - tmpPrice;
-            eItem.total -= (eBenefit.benefit.keep? eItem.origin: eItem.total) - tmpPrice;
+            var tmp = (eBenefit.benefit.keep? eItem.origin: eItem.total) * (1 - eBenefit.benefit.rate);
+            eBenefit.reduction += tmp;
+            eItem.total -= tmp;
         }
         else if(eBenefit.type == Benefit.types.promotion){
             eBenefit.total += eBenefit.benefit.keep? eItem.origin: eItem.total;
