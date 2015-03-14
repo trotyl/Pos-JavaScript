@@ -1,4 +1,4 @@
-// The abstract class of StrategyFactory, it should not be instantiated.
+// The static class of StrategyFactory, it should not be instantiated.
 function StrategyFactory() {
 }
 
@@ -30,9 +30,9 @@ StrategyFactory.getStrategy = function (number) {
             return new Strategy(
                 loadAllItems(),
                 [
-                    new BrandBenefitFactory().getDiscount('可口可乐', true),
-                    new SingleBenefitFactory().getDiscount('可口可乐350ml', true),
-                    new FullBenefitFactory().getPromotion([scope0, scope1, scope2], true)
+                    BenefitFactory.getBrandDiscount('可口可乐', true),
+                    BenefitFactory.getSingleDiscount('可口可乐350ml', true),
+                    BenefitFactory.getFullPromotion([scope0, scope1, scope2], true)
                 ],
                 {
                     0x01: {0x03: 0x02, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
@@ -44,10 +44,10 @@ StrategyFactory.getStrategy = function (number) {
             return new Strategy(
                 loadAllItems(),
                 [
-                    new SingleBenefitFactory().getDiscount('可口可乐350ml', true),
-                    new BrandBenefitFactory().getDiscount('可口可乐', true),
-                    new BrandBenefitFactory().getPromotion('康师傅', true),
-                    new SingleBenefitFactory().getPromotion('云山荔枝', true)
+                    BenefitFactory.getSingleDiscount('可口可乐350ml', true),
+                    BenefitFactory.getBrandDiscount('可口可乐', true),
+                    BenefitFactory.getBrandPromotion('康师傅', true),
+                    BenefitFactory.getSinglePromotion('云山荔枝', true)
                 ],
                 {
                     0x01: {0x03: 0x01, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
@@ -59,10 +59,10 @@ StrategyFactory.getStrategy = function (number) {
             return new Strategy(
                 loadAllItems(),
                 [
-                    new SingleBenefitFactory().getDiscount('可口可乐350ml', false),
-                    new BrandBenefitFactory().getDiscount('可口可乐', false),
-                    new BrandBenefitFactory().getPromotion('康师傅', false),
-                    new FullBenefitFactory().getPromotion([scope3], false, 5)
+                    BenefitFactory.getSingleDiscount('可口可乐350ml', false),
+                    BenefitFactory.getBrandDiscount('可口可乐', false),
+                    BenefitFactory.getBrandPromotion('康师傅', false),
+                    BenefitFactory.getFullPromotion([scope3], false, 5)
                 ],
                 {
                     0x01: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
@@ -74,11 +74,11 @@ StrategyFactory.getStrategy = function (number) {
             return new Strategy(
                 loadAllItems(),
                 [
-                    new SingleBenefitFactory().getDiscount('可口可乐350ml', true),
-                    new BrandBenefitFactory().getDiscount('可口可乐', true),
-                    new SingleBenefitFactory().getPromotion('果粒橙', true),
-                    new BrandBenefitFactory().getPromotion('云山', true),
-                    new FullBenefitFactory().getDiscount([scope4], false)
+                    BenefitFactory.getSingleDiscount('可口可乐350ml', true),
+                    BenefitFactory.getBrandDiscount('可口可乐', true),
+                    BenefitFactory.getSinglePromotion('果粒橙', true),
+                    BenefitFactory.getBrandPromotion('云山', true),
+                    BenefitFactory.getFullDiscount([scope4], false)
                 ],
                 {
                     0x01: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
