@@ -34,6 +34,10 @@ describe('Benefit: ', function () {
             expect(discount.scope).toEqual(scope);
         });
 
+        it('should be derived from Benefit.', function () {
+            expect(discount instanceof Benefit).toBeTruthy();
+        });
+
         it('should throw error if the rate is incorrect.', function () {
             var fun1 = function () {
                 return new Discount(-1, scope);
@@ -68,6 +72,10 @@ describe('Benefit: ', function () {
             expect(promotion.from).toEqual(100);
             expect(promotion.to).toEqual(2);
             expect(promotion.scope).toEqual(scope);
+        });
+
+        it('should be derived from Benefit.', function () {
+            expect(promotion instanceof Benefit).toBeTruthy();
         });
 
     });

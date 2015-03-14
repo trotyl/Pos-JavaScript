@@ -8,6 +8,8 @@ function Promotion(from, to, scope, keep) {
     this.keep = keep;
 }
 
+Promotion.prototype = new Benefit();
+
 // Validate whether the promotion conditions is in range.
 Promotion.Validate = function (from, reduction) {
     if(from < 0 || reduction < 0 || from < reduction){

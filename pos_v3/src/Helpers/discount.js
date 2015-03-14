@@ -8,7 +8,7 @@ function Discount(rate, scope, keep) {
     this.keep = keep;
 }
 
-
+Discount.prototype = new Benefit();
 
 // Validate whether the discount rate is in range.
 Discount.Validate = function (rate) {
