@@ -11,9 +11,8 @@ Strategy.prototype.GenerateResult = function (input, formatter, output) {
         Strategy.EnsureBenefit(enhancedItems[ii], this.mutual, enhancedBenefits);
     }
     for (var jj in enhancedBenefits) {
-        Strategy.GetBenefit(enhancedBenefits[jj], enhancedItems);
+        Strategy.GetBenefit(enhancedBenefits[jj]);
     }
-
     var prettyItems = Strategy.PrettifyItems(enhancedItems);
     var prettyBenefits = Strategy.PrettifyBenefits(enhancedBenefits);
     var prettifySummary = Strategy.PrettifySummary(prettyItems, prettyBenefits);
@@ -48,6 +47,7 @@ Strategy.prototype.GetEnhancedBenefits = function (benefits) {
             'type': benefit.type,
             'benefit': benefit,
             'items': {},
+            'total': 0,
             'reduction': 0
         });
     }
@@ -110,11 +110,13 @@ Strategy.EnsureBenefit = function (eItem, mutual, eBenefits) {
         }
         if (!oldOne || oldOne == 0) {
             eItem.benefit[eBenefit.type] = newOne;
+            eItem.benefits[eBenefit.type] = eItem.benefits[eBenefit.type] || {};
             eItem.benefits[eBenefit.type][newOne] = eBenefit.benefit;
             eBenefit.items[eItem.item.barcode] = eItem;
         }
-        else if ((typeMtl[oldOne | newOne] & newOne) == newOne) {
+        else if (typeMtl && (typeMtl[oldOne | newOne] & newOne) == newOne) {
             eItem.benefit[eBenefit.type] = typeMtl[oldOne | newOne];
+            eItem.benefits[eBenefit.type] = eItem.benefits[eBenefit.type] || {};
             eItem.benefits[eBenefit.type][newOne] = eBenefit.benefit;
             eBenefit.items[eItem.item.barcode] = eItem;
             for(var key in eItem.benefits[eBenefit.type]){
@@ -186,8 +188,25 @@ Strategy.GetPromotion = function (eItem, eBenefits) {
     })
 };
 
-Strategy.GetBenefit = function (eBenefit, eItems) {
+Strategy.GetBenefit = function (eBenefit) {
+    var compute = function (current, from, to) {
+        return current >= from ? parseInt(current / from) * to : 0;
+    };
 
+    for(var i in eBenefit.items){
+        var eItem = eBenefit.items[i];
+        if(eBenefit.type == Benefit.types.discount){
+            var tmpPrice = eItem.total * eBenefit.benefit.rate;
+            eBenefit.reduction += (eItem.total - tmpPrice);
+            eItem.total = eBenefit.benefit.keep ? eItem.total : tmpPrice;
+        }
+        else if(eBenefit.type == Benefit.types.promotion){
+            eBenefit.total += eItem.total;
+            var newReduction = compute(eBenefit.total, eBenefit.benefit.from, eBenefit.benefit.to);
+            eItem.total = eBenefit.benefit.keep ? eItem.total : (eItem.total - newReduction + eBenefit.reduction);
+            eBenefit.reduction = newReduction;
+        }
+    }
 };
 
 Strategy.PrettifyItems = function (enhancedItems) {
@@ -231,31 +250,32 @@ Strategy.PrettifyItems = function (enhancedItems) {
 Strategy.PrettifyBenefits = function (enhancedBenefits) {
     var prettyBenefits = [];
     for (var i in enhancedBenefits) {
-        if (!enhancedBenefits[i].reduction > 0) {
-            return
+        var eBenefit = enhancedBenefits[i];
+        if (!eBenefit.reduction > 0) {
+            continue
         }
-        var enhancedBenefit;
-        if (enhancedBenefits[i].type == Benefit.types.discount) {
-            enhancedBenefit = {
+        var pBenefit;
+        if (eBenefit.type == Benefit.types.discount) {
+            pBenefit = {
                 'type': Benefit.types.discount,
-                'scope': enhancedBenefits[i].scope,
-                'discount': enhancedBenefits[i].rate,
-                'reduction': enhancedBenefits[i].reduction
+                'scope': eBenefit.benefit.scope,
+                'discount': eBenefit.benefit.rate,
+                'reduction': eBenefit.reduction
             }
         }
         else if (enhancedBenefits[i].type == Benefit.types.promotion) {
-            enhancedBenefit = {
+            pBenefit = {
                 'type': Benefit.types.promotion,
-                'scope': enhancedBenefits[i].scope,
-                'from': enhancedBenefits[i].from,
-                'to': enhancedBenefits[i].to,
-                'reduction': enhancedBenefits[i].reduction
+                'scope': eBenefit.benefit.scope,
+                'from': eBenefit.benefit.from,
+                'to': eBenefit.benefit.to,
+                'reduction': eBenefit.reduction
             }
         }
         else {
             throw new Error('Type of the benefit is not available: ' + enhancedBenefits[i].type)
         }
-        prettyBenefits.push(enhancedBenefit);
+        prettyBenefits.push(pBenefit);
     }
     return prettyBenefits;
 };
