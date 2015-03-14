@@ -8,6 +8,18 @@ describe('Scope: ', function () {
 
     });
 
+    Object.size = function(obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    };
+
+    it('should have three enum types', function () {
+        expect(Object.size(Scope.types)).toEqual(3);
+    });
+
     describe('SingleScope ', function () {
         var scope;
 
@@ -30,6 +42,13 @@ describe('Scope: ', function () {
             expect(scope.isInRange(item2)).toBeFalsy();
         });
 
+        it('should be able to get correct description of discount.', function () {
+            expect(scope.GetDiscountDescription()).toEqual('可口可乐350ml单品');
+        });
+
+        it('should be able to get correct description of promotion.', function () {
+            expect(scope.GetPromotionDescription()).toEqual('可口可乐350ml');
+        });
     });
 
 
@@ -55,6 +74,13 @@ describe('Scope: ', function () {
             expect(scope.isInRange(item2)).toBeFalsy();
         });
 
+        it('should be able to get correct description of discount.', function () {
+            expect(scope.GetDiscountDescription()).toEqual('可口可乐品牌');
+        });
+
+        it('should be able to get correct description of promotion.', function () {
+            expect(scope.GetPromotionDescription()).toEqual('可口可乐品牌');
+        });
     });
 
 
@@ -81,5 +107,12 @@ describe('Scope: ', function () {
             expect(scope.isInRange(item2)).toBeTruthy();
         });
 
+        it('should be able to get correct description of discount.', function () {
+            expect(scope.GetDiscountDescription()).toEqual('');
+        });
+
+        it('should be able to get correct description of promotion.', function () {
+            expect(scope.GetPromotionDescription()).toEqual('');
+        });
     });
 });
