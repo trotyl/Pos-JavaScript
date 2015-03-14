@@ -13,7 +13,6 @@ Strategy.prototype.GenerateResult = function (input, formatter, output) {
     for (var jj in enhancedBenefits) {
         Strategy.GetBenefit(enhancedBenefits[jj]);
     }
-    console.log(enhancedBenefits);
     var prettyItems = Strategy.PrettifyItems(enhancedItems);
     var prettyBenefits = Strategy.PrettifyBenefits(enhancedBenefits);
     var prettifySummary = Strategy.PrettifySummary(prettyItems, prettyBenefits);
@@ -102,9 +101,9 @@ Strategy.GetBenefit = function (eBenefit) {
     for(var i in eBenefit.items){
         var eItem = eBenefit.items[i];
         if(eBenefit.type == Benefit.types.discount){
-            var tmpPrice = eItem.total * eBenefit.benefit.rate;
-            eBenefit.reduction += (eBenefit.benefit.keep? eItem.origin: eItem.total) * (1 - eBenefit.benefit.rate);
-            eItem.total = tmpPrice;
+            var tmpPrice =  (eBenefit.benefit.keep? eItem.origin: eItem.total) * eBenefit.benefit.rate;
+            eBenefit.reduction += (eBenefit.benefit.keep? eItem.origin: eItem.total) - tmpPrice;
+            eItem.total -= (eBenefit.benefit.keep? eItem.origin: eItem.total) - tmpPrice;
         }
         else if(eBenefit.type == Benefit.types.promotion){
             eBenefit.total += eBenefit.benefit.keep? eItem.origin: eItem.total;
@@ -112,6 +111,7 @@ Strategy.GetBenefit = function (eBenefit) {
             eItem.total = (eItem.total - newReduction + eBenefit.reduction);
             eBenefit.reduction = newReduction;
         }
+
     }
 };
 
