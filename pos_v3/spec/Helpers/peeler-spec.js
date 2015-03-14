@@ -41,19 +41,20 @@ describe('Peeler: ', function () {
         expect(prettyItems[0].amount).toEqual(1);
     });
 
-    xit('should be able to generate the enhanced items.', function () {
-        var input = [
-            { 'ITEM000000' : 20 },
-            { 'ITEM000010' : 20 },
-            { 'ITEM000005' : 30 },
-            { 'ITEM000003' : 12 }
-        ];
-        var enhancedItems = strategy.GetEnhancedItems(input);
-        expect(enhancedItems.length).toEqual(4);
-        expect(enhancedItems[0].item.barcode).toEqual('ITEM000000');
-        expect(enhancedItems[0].amount).toEqual(20);
-        expect(enhancedItems[0].total).toEqual(60);
-    });
+    it('should be able to get the pretty benefits.', function () {
+        var prettyBenefits = Peeler.PrettifyBenefits(enhancedBenefits);
+        expect(prettyBenefits.length).toEqual(2);
 
+        expect(prettyBenefits[0].type).toEqual(Benefit.types.discount);
+        expect(prettyBenefits[0].scope).toBeTruthy();
+        expect(prettyBenefits[0].discount).toEqual(0.9);
+        expect(prettyBenefits[0].reduction).toEqual(2);
+
+        expect(prettyBenefits[1].type).toEqual(Benefit.types.promotion);
+        expect(prettyBenefits[1].scope).toBeTruthy();
+        expect(prettyBenefits[1].from).toEqual(100);
+        expect(prettyBenefits[1].to).toEqual(5);
+        expect(prettyBenefits[1].reduction).toEqual(2);
+    });
 
 });
