@@ -1,9 +1,14 @@
+// The core class of the application.
+// 'allItems' is a list for all available items for sale.
+// 'benefits' is a list for all benefit going to take.
+// 'mutual' is the object provide the solution rule of the conflict between benefits.
 function Strategy(allItems, benefits, mutual) {
     this.allItems = allItems;
     this.benefits = benefits;
     this.mutual = mutual;
 }
 
+// The method to run the strategy.
 Strategy.prototype.GenerateResult = function (input, formatter, output) {
     var enhancedItems = this.GetEnhancedItems(input);
     var enhancedBenefits = this.GetEnhancedBenefits(this.benefits);
@@ -130,7 +135,7 @@ Strategy.PrettifyBenefits = function (enhancedBenefits) {
     var prettyBenefits = [];
     for (var i in enhancedBenefits) {
         var eBenefit = enhancedBenefits[i];
-        if (!eBenefit.reduction > 0) {
+        if (eBenefit.reduction <= 0) {
             continue
         }
         var pBenefit;
