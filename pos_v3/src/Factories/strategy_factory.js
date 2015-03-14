@@ -11,6 +11,19 @@ StrategyFactory.output = function (result, formatter, logger) {
     logger.log(res);
 };
 
+StrategyFactory.GetStrategy = function (number) {
+    var map = {
+        1: FirstStrategyFactory,
+        2: SecondStrategyFactory,
+        3: ThirdStrategyFactory,
+        4: FourthStrategyFactory
+    };
+    if(!map[number]){
+        throw new Error('Invalid number: ' + number);
+    }
+    return new map[number]().GetStrategy();
+};
+
 
 // The derived class of StrategyFactory for the first strategy.
 function FirstStrategyFactory() {
