@@ -7,7 +7,6 @@ function SinglePromotionFactory() {}
 
 
 SinglePromotionFactory.prototype.GetPromotion = function (name, keep, to) {
-    keep = keep || true;
     to = to || 5;
     return new Promotion(100, to, new SingleScope(name), keep);
 };
@@ -15,7 +14,6 @@ SinglePromotionFactory.prototype.GetPromotion = function (name, keep, to) {
 function BrandPromotionFactory() {}
 
 BrandPromotionFactory.prototype.GetPromotion = function (brand, keep, to) {
-    keep = keep || true;
     to = to || 2;
     return new Promotion(100, to, new BrandScope(brand), keep);
 };
@@ -23,7 +21,6 @@ BrandPromotionFactory.prototype.GetPromotion = function (brand, keep, to) {
 function FullPromotionFactory() {}
 
 FullPromotionFactory.prototype.GetPromotion = function (exceptions, keep, to) {
-    keep = keep || true;
     to = to || 3;
     return new Promotion(100, to, new FullScope(exceptions), keep);
 };

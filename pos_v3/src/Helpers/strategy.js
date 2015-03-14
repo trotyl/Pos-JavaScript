@@ -26,11 +26,12 @@ Strategy.prototype.GetEnhancedItems = function (input) {
     var enhancedItems = [];
     _.forEach(input, function (fakeItem) {
         for (var barcode in fakeItem) {
-            var amount = fakeItem[barcode]
+            var amount = fakeItem[barcode];
             var item = _.findWhere(this.allItems, {'barcode': barcode});
             item && enhancedItems.push({
                 'item': item,
                 'amount': amount,
+                'origin': item.price * amount,
                 'total': item.price * amount,
                 'benefit': {},
                 'benefits': {}
@@ -102,13 +103,13 @@ Strategy.GetBenefit = function (eBenefit) {
         var eItem = eBenefit.items[i];
         if(eBenefit.type == Benefit.types.discount){
             var tmpPrice = eItem.total * eBenefit.benefit.rate;
-            eBenefit.reduction += (eItem.total - tmpPrice);
-            eItem.total = eBenefit.benefit.keep ? eItem.total : tmpPrice;
+            eBenefit.reduction += (eBenefit.benefit.keep? eItem.origin: eItem.total) * (1 - eBenefit.benefit.rate);
+            eItem.total = tmpPrice;
         }
         else if(eBenefit.type == Benefit.types.promotion){
-            eBenefit.total += eItem.total;
+            eBenefit.total += eBenefit.benefit.keep? eItem.origin: eItem.total;
             var newReduction = compute(eBenefit.total, eBenefit.benefit.from, eBenefit.benefit.to);
-            eItem.total = eBenefit.benefit.keep ? eItem.total : (eItem.total - newReduction + eBenefit.reduction);
+            eItem.total = (eItem.total - newReduction + eBenefit.reduction);
             eBenefit.reduction = newReduction;
         }
     }

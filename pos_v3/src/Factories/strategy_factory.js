@@ -14,11 +14,11 @@ FirstStrategyFactory.prototype.GetStrategy = function () {
         [
             new Discount(0.9, scope0, true),
             new Discount(0.95, scope1, true),
-            new FullPromotionFactory().GetPromotion([scope0, scope1, scope2])
+            new FullPromotionFactory().GetPromotion([scope0, scope1, scope2], true)
         ],
         {
-            0x01: {0x03: 0x02},
-            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06}
+            0x01: {0x03: 0x02, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
+            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07}
         }
     )
 };
@@ -33,12 +33,12 @@ SecondStrategyFactory.prototype.GetStrategy = function () {
         [
             new Discount(0.95, scope1, true),
             new Discount(0.9, scope0, true),
-            new BrandPromotionFactory().GetPromotion('康师傅'),
-            new SinglePromotionFactory().GetPromotion('云山荔枝')
+            new BrandPromotionFactory().GetPromotion('康师傅', true),
+            new SinglePromotionFactory().GetPromotion('云山荔枝', true)
         ],
         {
-            0x01: {0x03: 0x01},
-            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06}
+            0x01: {0x03: 0x01, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
+            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07}
         }
     )
 };
@@ -58,8 +58,8 @@ ThirdStrategyFactory.prototype.GetStrategy = function () {
             new FullPromotionFactory().GetPromotion([scope2], false, 5)
         ],
         {
-            0x01: {0x03: 0x03},
-            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06}
+            0x01: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
+            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07}
         }
     )
 };
@@ -75,14 +75,13 @@ FourthStrategyFactory.prototype.GetStrategy = function () {
         [
             new Discount(0.95, scope1, true),
             new Discount(0.9, scope0, true),
-            new Discount(0.9, new FullScope([]), true),
-            new SinglePromotionFactory().GetPromotion('果粒橙'),
-            new BrandPromotionFactory().GetPromotion('云山'),
-            new FullPromotionFactory().GetPromotion([scope2])
+            new SinglePromotionFactory().GetPromotion('果粒橙', true),
+            new BrandPromotionFactory().GetPromotion('云山', true),
+            new Discount(0.9, new FullScope([scope2]), false)
         ],
         {
-            0x01: {0x03: 0x03},
-            0x02: {}
+            0x01: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07},
+            0x02: {0x03: 0x03, 0x05: 0x05, 0x06: 0x06, 0x07: 0x07}
         }
     )
 };
